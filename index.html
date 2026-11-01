@@ -1,0 +1,620 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>توازن</title>
+<style>body{margin:0}</style>
+</head>
+<body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Readex+Pro:wght@500;600;700&display=swap">
+<style>
+/* Layout: one phone-width column, centered on wide screens. Bottom tab bar, one task per screen. */
+:root{
+  --canvas:#dce8e2; --bg:#f2f7f4; --surface:#ffffff; --surface2:#e8f1ed;
+  --ink:#12302a; --muted:#57706a; --line:#d1dfd8;
+  --brand:#0f6b52; --on-brand:#ffffff; --deep:#0f5c46; --accent:#17a77c;
+  --clay:#a95d2d; --clay-bg:#f6e8dd; --blue:#2c5bc9;
+  --danger:#b3261e; --danger-bg:#fbe6e3; --ok-bg:#dcf2e8;
+  --f-display:'Readex Pro','IBM Plex Sans Arabic',Tahoma,sans-serif;
+  --f-body:'IBM Plex Sans Arabic',Tahoma,system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --canvas:#08110e; --bg:#0e1c17; --surface:#15271f; --surface2:#1b3128;
+  --ink:#e5f3ee; --muted:#98b3a9; --line:#29433a;
+  --brand:#148a6a; --on-brand:#ffffff; --deep:#72dfba; --accent:#2cc698;
+  --clay:#e39a63; --clay-bg:#3a2a1e; --blue:#86a9f5;
+  --danger:#f48b83; --danger-bg:#3b1f1d; --ok-bg:#17382c; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --canvas:#08110e; --bg:#0e1c17; --surface:#15271f; --surface2:#1b3128;
+  --ink:#e5f3ee; --muted:#98b3a9; --line:#29433a;
+  --brand:#148a6a; --on-brand:#ffffff; --deep:#72dfba; --accent:#2cc698;
+  --clay:#e39a63; --clay-bg:#3a2a1e; --blue:#86a9f5;
+  --danger:#f48b83; --danger-bg:#3b1f1d; --ok-bg:#17382c; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--canvas);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6}
+#app{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));position:relative}
+#app.wl{background:linear-gradient(165deg,#0b3d31 0%,#0f6b52 55%,#17a77c 100%);color:#fff}
+.page{padding-block:18px 108px;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--f-display);margin:0;text-wrap:balance;line-height:1.35}
+h1{font-size:24px} h2{font-size:18px} h3{font-size:15px}
+p{margin:0}
+.muted{color:var(--muted)} .small{font-size:13px} .xs{font-size:12px}
+.num{font-variant-numeric:tabular-nums}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{font-family:var(--f-display);font-weight:700;font-size:20px;color:var(--deep)}
+.eyebrow{font-size:13px;color:var(--muted)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:16px}
+.card.tint{background:var(--surface2)}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;border:0;border-radius:16px;
+  background:var(--brand);color:var(--on-brand);font-weight:600;font-size:16px;padding:14px 18px;min-height:50px}
+.btn.sec{background:transparent;color:var(--deep);border:1.5px solid var(--line)}
+.btn.sm{width:auto;min-height:40px;padding:8px 16px;font-size:14px;border-radius:12px}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.btn.danger{background:var(--danger-bg);color:var(--danger)}
+.row{display:flex;align-items:center;gap:12px}
+.row>.grow{flex:1;min-width:0}
+.ico{width:20px;height:20px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.bubble{width:40px;height:40px;border-radius:50%;background:var(--surface2);color:var(--deep);display:grid;place-items:center;flex:none}
+.pill{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:600;background:var(--ok-bg);color:var(--deep)}
+.pill.warn{background:var(--clay-bg);color:var(--clay)}
+.pill.bad{background:var(--danger-bg);color:var(--danger)}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 8px;text-align:center;min-width:0}
+.tile b{display:block;font-family:var(--f-display);font-size:20px;color:var(--deep);line-height:1.3}
+.tile span{font-size:12px;color:var(--muted)}
+.alert{display:flex;gap:12px;border-radius:18px;padding:14px;background:var(--danger-bg);color:var(--danger)}
+.alert.warn{background:var(--clay-bg);color:var(--clay)}
+.alert b{display:block;margin-bottom:2px}
+.alert p{color:var(--ink);font-size:14px}
+
+/* readiness */
+.ready{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center}
+.score{display:flex;align-items:baseline;gap:6px;justify-content:center;direction:ltr}
+.score b{font-family:var(--f-display);font-size:76px;line-height:1;color:var(--deep);font-weight:700}
+.score span{font-size:18px;color:var(--muted)}
+.factors{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;width:100%;text-align:start}
+.factors li{display:flex;justify-content:space-between;gap:12px;font-size:14px;padding:8px 0;border-top:1px solid var(--line)}
+.factors .pen{font-weight:700;color:var(--clay)} .factors .pen.zero{color:var(--deep)}
+.link{background:none;border:0;color:var(--deep);font-weight:600;font-size:14px;padding:6px;text-decoration:underline;text-underline-offset:3px}
+
+/* lists */
+.list{padding:0;overflow:hidden}
+.item{display:flex;align-items:center;gap:12px;width:100%;background:none;border:0;text-align:start;padding:14px 16px;border-top:1px solid var(--line);min-height:64px}
+.item:first-child{border-top:0}
+.item .t{font-weight:600} .item .s{font-size:13px;color:var(--muted)}
+.item.done .t{text-decoration:line-through;color:var(--muted)}
+.chev{width:18px;height:18px;stroke:var(--muted);fill:none;stroke-width:2;transform:scaleX(-1)}
+
+/* inputs */
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:start;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:14px 16px;min-height:56px;font-weight:500}
+.opt[aria-checked="true"]{border-color:var(--brand);background:var(--ok-bg);color:var(--deep)}
+.radio{width:22px;height:22px;border-radius:50%;border:2px solid var(--line);flex:none;display:grid;place-items:center}
+.opt[aria-checked="true"] .radio{border-color:var(--brand);background:var(--brand)}
+.opt[aria-checked="true"] .radio::after{content:"";width:8px;height:8px;border-radius:50%;background:#fff}
+.opt .d{font-size:13px;color:var(--muted);font-weight:400}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.sport{flex-direction:column;justify-content:center;text-align:center;min-height:92px;gap:8px}
+.stack{display:flex;flex-direction:column;gap:10px}
+input[type=text],select{font:inherit;width:100%;min-height:48px;border-radius:14px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:10px 14px}
+label.f{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--brand);height:32px}
+.steps-bar{display:flex;align-items:center;gap:12px}
+.seg{flex:1;height:6px;border-radius:3px;background:var(--line);display:flex;gap:4px;background:none}
+.seg i{flex:1;border-radius:3px;background:var(--line)} .seg i.on{background:var(--brand)}
+.iconbtn{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--ink)}
+.chipset{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 16px;min-height:42px;font-weight:500}
+.chip[aria-pressed="true"]{border-color:var(--clay);background:var(--clay-bg);color:var(--clay)}
+.chip.seg7[aria-pressed="true"]{border-color:var(--brand);background:var(--brand);color:#fff}
+.switch{position:relative;width:48px;height:28px;border-radius:14px;background:var(--line);border:0;flex:none}
+.switch::after{content:"";position:absolute;top:3px;inset-inline-start:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:inset-inline-start .15s}
+.switch[aria-checked="true"]{background:var(--brand)}
+.switch[aria-checked="true"]::after{inset-inline-start:23px}
+
+/* nav */
+.nav{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+.nav-in{max-width:480px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);padding:6px max(8px,env(safe-area-inset-right,0px)) 6px max(8px,env(safe-area-inset-left,0px))}
+.nav button{display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:0;padding:6px 0;font-size:12px;color:var(--muted);min-height:56px;border-radius:14px}
+.nav button[aria-current="page"]{color:var(--deep);font-weight:700}
+.nav button[aria-current="page"] .ico{background:var(--surface2);border-radius:12px;padding:3px;width:36px;height:28px;box-sizing:border-box}
+
+/* welcome */
+.wl-box{min-height:100vh;display:flex;flex-direction:column;justify-content:center;gap:20px;padding-block:32px}
+.wl-logo{width:92px;height:92px;border-radius:28px;background:#f1f7f4;display:grid;place-items:center;color:#0b3d31;margin-inline:auto}
+.wl-logo .ico{width:48px;height:48px;stroke-width:2.4}
+.wl h1{font-size:42px;text-align:center}
+.wl .tag{text-align:center;color:#bff0dd;font-size:17px}
+.wl ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.wl li{display:flex;gap:12px;align-items:flex-start;font-size:16px}
+.wl li::before{content:"";width:9px;height:9px;border-radius:50%;background:#f0a46a;margin-top:10px;flex:none}
+.wl .btn{background:#f1f7f4;color:#0b3d31}
+.wl .link{color:#d3f5e6;text-align:center;display:block;margin:0 auto}
+
+/* timer */
+.timer{display:flex;flex-direction:column;align-items:center;gap:14px;padding:20px 16px}
+.ring{position:relative;width:176px;height:176px}
+.ring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.ring .bg{stroke:var(--line)} .ring .fg{stroke:var(--accent);transition:stroke-dashoffset .3s linear}
+.ring .t{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-display);font-size:34px;color:var(--deep);direction:ltr;font-variant-numeric:tabular-nums}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.steps li{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px 14px}
+.steps li.cur{border-color:var(--brand);background:var(--ok-bg)}
+.steps .n{width:28px;height:28px;border-radius:50%;background:var(--surface2);color:var(--deep);display:grid;place-items:center;font-weight:700;font-size:13px;flex:none}
+.sticky{position:sticky;bottom:0;background:var(--bg);padding-block:10px 14px;display:flex;flex-direction:column;gap:8px;margin-top:auto}
+
+/* charts */
+.chart{width:100%;height:auto;display:block}
+.chart text{font-family:var(--f-body);fill:var(--muted);font-size:10px}
+.chart .grid{stroke:var(--line);stroke-width:1}
+.chart .bar{fill:var(--accent)} .chart .bar.today{fill:var(--blue)}
+.chart .val{fill:var(--ink);font-weight:700;font-size:11px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-inline-end:6px}
+.badges{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;text-align:center}
+.badge{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:13px}
+.badge .c{width:64px;height:64px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;color:var(--muted)}
+.badge.on .c{border-color:var(--brand);background:var(--ok-bg);color:var(--deep)}
+.badge .c .ico{width:26px;height:26px}
+.water{display:flex;gap:4px}
+.water i{flex:1;height:10px;border-radius:5px;background:var(--line)} .water i.on{background:var(--blue)}
+textarea{width:100%;min-height:120px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:12px/1.5 ui-monospace,monospace;padding:10px;direction:ltr}
+.avatar{width:72px;height:72px;border-radius:50%;object-fit:cover;border:3px solid var(--brand)}
+.disc{font-size:12px;color:var(--muted);text-align:center}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div id="app" dir="rtl" lang="ar"></div>
+
+<script id="logic">
+/* ---------- المنطق: قواعد حساب الجاهزية (بدون DOM) ---------- */
+var SPORTS=[['football','كرة القدم'],['running','الجري'],['basketball','كرة السلة'],['swimming','السباحة'],['weights','رفع الأثقال'],['cycling','الدراجة']];
+var SPORT_EX={football:'hams',running:'ankle',basketball:'ankle',swimming:'shoulder',weights:'back',cycling:'quad'};
+var SESS=[['lt2','أقل من مرتين'],['2-3','2–3'],['4-5','4–5'],['6+','6 أو أكثر'],['daily','يومياً']];
+var GOALS=[['prevent','منع الإصابات','تقليل خطر الإصابة بالتوازن العضلي'],['recover','تسريع الاستشفاء','التعافي بشكل أسرع بعد الحصص القوية'],['return','العودة بعد إصابة','إعادة التأهيل التدريجي والآمن']];
+var AREAS=[['knee','الركبة'],['shoulder','الكتف'],['back','الظهر'],['ankle','الكاحل'],['thigh','الفخذ']];
+var AL={};AREAS.forEach(function(a){AL[a[0]]=a[1]});
+var SPORT_L={};SPORTS.forEach(function(a){SPORT_L[a[0]]=a[1]});
+var GOAL_L={};GOALS.forEach(function(a){GOAL_L[a[0]]=a[1]});
+
+var PEN_SLEEP={'lt5':25,'5-6':17,'6-7':10,'7-8':3,'8+':0};
+var SLEEP_L={'lt5':'أقل من 5 ساعات','5-6':'5 إلى 6 ساعات','6-7':'6 إلى 7 ساعات','7-8':'7 إلى 8 ساعات','8+':'8 ساعات أو أكثر'};
+var SLEEP_H={'lt5':4.5,'5-6':5.5,'6-7':6.5,'7-8':7.5,'8+':8.5};
+function painPen(p){return p>=7?15:p>=4?9:p>=1?4:0}
+function maxPain(p){var m=0;for(var k in (p||{})){m=Math.max(m,+p[k])}return m}
+function computeReadiness(a,prev){
+  var parts=[];function add(k,label,pen,note){parts.push({k:k,label:label,pen:pen,note:note})}
+  add('sleep','النوم',PEN_SLEEP[a.sleep]||0,SLEEP_L[a.sleep]);
+  add('sore','الشد العضلي',[0,6,13,20][a.sore]||0,['لا شد','خفيف','متوسط','شديد'][a.sore]);
+  add('load','حمل أمس',[0,2,7,15][a.load]||0,['راحة','خفيف','متوسط','شاق'][a.load]);
+  if(+a.load===3&&prev&&+prev.a.load===3)add('acc','تراكم الأحمال',5,'يومان شاقان متتاليان');
+  add('energy','الطاقة',({5:0,4:5,3:10,2:15,1:20})[a.energy]||0,({5:'ممتازة',4:'جيدة',3:'عادية',2:'منخفضة',1:'مُنهَك'})[a.energy]);
+  add('water','الماء',[5,2,0][a.water]||0,['أقل من لتر','لتر إلى لترين','أكثر من لترين'][a.water]);
+  var mp=maxPain(a.pains);add('pain','الألم',painPen(mp),mp?('أشد ألم '+mp+' من 10'):'لا ألم');
+  var total=parts.reduce(function(s,p){return s+p.pen},0);
+  return {score:Math.max(0,Math.min(100,100-total)),parts:parts,flag:mp>=7,maxPain:mp};
+}
+function bandOf(r){if(r.flag)return 'stop';var s=r.score;return s>=80?'ready':s>=60?'light':s>=40?'recovery':'rest'}
+var BANDS={
+  ready:{label:'جاهز للتدريب',cls:'',msg:'جسمك جاهز. تدرّب بشدتك المعتادة وابدأ بإحماء قصير.'},
+  light:{label:'تدريب خفيف',cls:'warn',msg:'جاهزيتك متوسطة. اختر تدريباً خفيفاً أو قصيراً وأنهِه بالتمدد.'},
+  recovery:{label:'تعافٍ نشط',cls:'warn',msg:'جسمك يحتاج تعافياً نشطاً اليوم: حركة خفيفة وتمدد دون تدريب شاق.'},
+  rest:{label:'راحة اليوم',cls:'bad',msg:'الأفضل أن ترتاح اليوم: نوم مبكر وماء وتمارين تنفس.'},
+  stop:{label:'أوقف التدريب',cls:'bad',msg:'ألم شديد. لا تدرّب المنطقة المؤلمة، وراجع أخصائي علاج طبيعي إذا استمر أو زاد.'}
+};
+var EX={
+  mob:{t:'تحريك المفاصل وإطالة ديناميكية',min:10,sets:2,lv:'خفيفة',area:null,d:'إحماء لطيف للمفاصل قبل التدريب أو في يوم التعافي.',
+    steps:['قف بثبات وحرّك الرقبة والكتفين بدوائر بطيئة، 10 مرات.','أدِر الحوض ثم الركبتين بحركات صغيرة، 10 مرات لكل جهة.','استند إلى جدار ومرجح الساق للأمام والخلف 10 مرات لكل ساق.','انزل بخطوة اندفاع للأمام ثم ارجع، 8 مرات لكل ساق.'],
+    caution:'اشعر بتمدد خفيف فقط. أوقف التمرين عند أي ألم حاد.'},
+  quad:{t:'إطالة الفخذ الأمامي',min:5,sets:3,lv:'خفيفة',area:'knee',d:'تمدد عضلة الفخذ الأمامية دون ضغط على مفصل الركبة.',
+    steps:['قف بثبات وأمسك جداراً أو كرسياً بيد واحدة.','اثنِ الركبة وقرّب الكعب من المؤخرة، وأمسك القدم باليد.','ثبّت 30 ثانية مع تنفس هادئ دون شد الركبة.','بدّل الساق وكرر 3 مرات لكل ساق.'],
+    caution:'إذا شعرت بألم داخل الركبة وليس في عضلة الفخذ فتوقف.'},
+  kneeRehab:{t:'رفع الساق المستقيمة لتقوية الركبة',min:8,sets:3,lv:'خفيفة',area:'knee',d:'تقوية عضلة الفخذ بحمل خفيف على الركبة.',
+    steps:['استلقِ على الظهر، اثنِ ركبة واحدة وأبقِ الأخرى مستقيمة.','شدّ عضلة الفخذ في الساق المستقيمة.','ارفعها نحو 30 سم وثبّت 3 ثوانٍ ثم انزل ببطء.','كرر 10 مرات، ثم بدّل الساق. 3 مجموعات.'],
+    caution:'توقف فوراً إذا زاد ألم الركبة أو ظهر تورم.'},
+  hams:{t:'إطالة أوتار الركبة جلوساً',min:5,sets:3,lv:'خفيفة',area:'thigh',d:'تمدد الجزء الخلفي من الفخذ.',
+    steps:['اجلس بوضعية مريحة على حافة السرير أو الكرسي.','مدّ قدمك ببطء حتى تشعر بشد خفيف خلف الركبة.','ثبّت على هذه الوضعية 30 ثانية مع التنفس بعمق.','كرر التمرين مع القدم الأخرى إذا لم يكن هناك ألم.'],
+    caution:'الشد الخفيف طبيعي. الألم الحاد أو التنميل يعني التوقف.'},
+  shoulder:{t:'تحريك الكتف على الجدار',min:6,sets:2,lv:'خفيفة',area:'shoulder',d:'استعادة مدى حركة الكتف بلطف.',
+    steps:['قف أمام جدار وضع الساعدين عليه بمستوى الصدر.','انزلق بالساعدين للأعلى ببطء حتى أعلى نقطة مريحة.','ثبّت 3 ثوانٍ ثم انزل ببطء، 10 مرات.','كرر مجموعتين مع راحة 30 ثانية بينهما.'],
+    caution:'لا تتجاوز النقطة التي يبدأ فيها الألم. الألم الحاد يعني التوقف.'},
+  back:{t:'وضعية الطفل لأسفل الظهر',min:5,sets:3,lv:'خفيفة',area:'back',d:'استرخاء وتمدد لطيف لأسفل الظهر.',
+    steps:['اجثُ على الركبتين واجلس على الكعبين.','مدّ الذراعين للأمام على الأرض وأرخِ الجبهة.','تنفس بعمق وثبّت 30 ثانية.','ارجع ببطء وكرر 3 مرات.'],
+    caution:'إذا ظهر ألم أو تنميل ينزل إلى الساق فتوقف.'},
+  ankle:{t:'دوائر الكاحل وتمرين التوازن',min:5,sets:2,lv:'خفيفة',area:'ankle',d:'تحريك الكاحل وتحسين الثبات.',
+    steps:['اجلس ومدّ ساقاً، وارسم دوائر بالقدم 10 مرات لكل اتجاه.','قف على قدم واحدة بجانب جدار للاستناد.','ثبّت 20 ثانية، ثم بدّل القدم.','كرر مجموعتين.'],
+    caution:'تجنب التمرين إذا كان الكاحل متورماً أو لا يتحمل الوزن.'},
+  foam:{t:'استخدام الأسطوانة الرغوية',min:6,sets:2,lv:'متوسطة',area:null,d:'تدليك ذاتي لعضلات الفخذ والسمانة.',
+    steps:['ضع الأسطوانة تحت الفخذ الأمامي ودحرجها ببطء 30 إلى 60 ثانية.','انتقل إلى الفخذ الخلفي ثم السمانة بالطريقة نفسها.','توقف عند النقاط المشدودة 20 ثانية مع التنفس.','تجنب الضغط المباشر على المفاصل والعظام.'],
+    caution:'لا تضغط على منطقة مؤلمة بشدة. الألم الحاد يعني التوقف.'},
+  calm:{t:'تنفس وتهدئة',min:5,sets:1,lv:'خفيفة',area:null,d:'تنفس بطيء لخفض التوتر وتحسين النوم.',
+    steps:['اجلس أو استلقِ بوضعية مريحة وأغمض عينيك.','استنشق من الأنف 4 ثوانٍ.','ازفر ببطء من الفم 6 ثوانٍ.','كرر لمدة 5 دقائق دون إجهاد.'],
+    caution:'إذا شعرت بدوار فعد إلى التنفس الطبيعي.'},
+  walk:{t:'مشي خفيف',min:15,sets:1,lv:'خفيفة',area:null,d:'حركة هادئة تنشّط الدورة الدموية.',
+    steps:['ابدأ بخطى بطيئة لدقيقتين.','امشِ بوتيرة مريحة تسمح لك بالكلام.','أنهِ بخطى بطيئة وتمدد خفيف للسمانة.'],
+    caution:'اختر سطحاً مستوياً. توقف عند أي ألم في المفاصل.'},
+  balance:{t:'توازن على قدم واحدة',min:6,sets:3,lv:'خفيفة',area:null,d:'يقوّي عضلات الثبات ويقلل خطر الالتواء.',
+    steps:['قف قرب جدار وارفع إحدى القدمين قليلاً.','ثبّت 30 ثانية مع نظر ثابت للأمام.','بدّل القدم وكرر 3 مرات لكل جهة.'],
+    caution:'ابقَ قرب شيء تستند إليه لتجنب السقوط.'}
+};
+var AREA_EX={knee:['kneeRehab','quad'],shoulder:['shoulder'],back:['back'],ankle:['ankle'],thigh:['hams','quad']};
+function buildPlan(a,r,profile){
+  var b=bandOf(r),ids=[],pains=a.pains||{};
+  if(b==='stop')return ['calm'];
+  if(b==='rest')return maxPain(pains)>0?['calm']:['foam','calm'];
+  else if(b==='recovery')ids=['walk','mob'];
+  else ids=['mob'];
+  for(var k in pains){var v=+pains[k];if(v<1)continue;var ex=AREA_EX[k];if(ex)ids.push(v>=4?ex[0]:(ex[1]||ex[0]))}
+  if(profile){
+    if(b==='ready'||b==='light'){var se=SPORT_EX[profile.sport];if(se)ids.push(AREA_EX[se]?AREA_EX[se][0]:se)}
+    if(profile.goal==='recover')ids.push('foam');
+    if(profile.goal==='prevent')ids.push('balance');
+  }
+  var out=[];ids.forEach(function(i){if(EX[i]&&out.indexOf(i)<0)out.push(i)});
+  out=out.slice(0,4);out.push('calm');return out;
+}
+</script>
+
+<script>
+(function(){
+'use strict';
+var app=document.getElementById('app');
+var KEY='tawazun.v1';
+var DAYS=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+function z(n){return (n<10?'0':'')+n}
+function fmt(d){return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())}
+function addDays(d,n){var x=new Date(d.getTime());x.setDate(x.getDate()+n);return x}
+function parse(s){return new Date(s+'T12:00:00')}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+function today(){return fmt(new Date())}
+
+/* ---------- الحالة ---------- */
+var S=load()||{profile:null,checkins:[],water:{},done:{},prefs:{morning:true,plan:false},demo:false};
+function load(){try{return JSON.parse(localStorage.getItem(KEY))}catch(e){return null}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+var ui={onb:false,step:0,name:'',sport:null,sessions:null,goal:null,
+  t:null,explain:false,range:7,tm:null,csv:'',confirmReset:false};
+var iv=null;
+
+function ckOn(d){for(var i=0;i<S.checkins.length;i++)if(S.checkins[i].d===d)return S.checkins[i];return null}
+function ckBefore(d){var best=null;S.checkins.forEach(function(c){if(c.d<d&&(!best||c.d>best.d))best=c});return best}
+function addCheckin(d,a){
+  var prev=ckBefore(d),r=computeReadiness(a,prev),b=bandOf(r);
+  var rec={d:d,a:a,score:r.score,band:b,flag:r.flag,parts:r.parts};
+  S.checkins=S.checkins.filter(function(c){return c.d!==d});S.checkins.push(rec);
+  S.checkins.sort(function(x,y){return x.d<y.d?-1:1});return rec;
+}
+function streak(){var n=0,d=new Date();if(!ckOn(fmt(d)))d=addDays(d,-1);while(ckOn(fmt(d))){n++;d=addDays(d,-1)}return n}
+function doneIds(d){return S.done[d||today()]||[]}
+function seedDemo(){
+  S={profile:{name:'أحمد',sport:'football',sessions:'4-5',goal:'recover'},checkins:[],water:{},done:{},prefs:{morning:true,plan:false},demo:true};
+  var rows=[
+    {sleep:'6-7',sore:2,load:2,energy:3,water:1,pains:{knee:8,shoulder:3}},
+    {sleep:'5-6',sore:3,load:3,energy:2,water:0,pains:{knee:7,shoulder:4}},
+    {sleep:'7-8',sore:2,load:0,energy:4,water:1,pains:{knee:7,shoulder:3}},
+    {sleep:'7-8',sore:1,load:1,energy:4,water:2,pains:{knee:5,shoulder:2}},
+    {sleep:'6-7',sore:2,load:2,energy:3,water:1,pains:{knee:3,shoulder:4}},
+    {sleep:'7-8',sore:1,load:2,energy:4,water:2,pains:{knee:2,shoulder:6}}];
+  rows.forEach(function(a,i){addCheckin(fmt(addDays(new Date(),-(6-i))),a)});
+  save();
+}
+
+/* ---------- أيقونات ---------- */
+var P={
+  pulse:'<path d="M3 12h4l3-8 4 16 3-8h4"/>',home:'<path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/>',
+  list:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>',
+  chart:'<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',user:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>',
+  check:'<path d="M4 12l5 5L20 6"/>',drop:'<path d="M12 3c4 5 6 8 6 11a6 6 0 0 1-12 0c0-3 2-6 6-11z"/>',
+  moon:'<path d="M20 14A8 8 0 1 1 10 4a6 6 0 0 0 10 10z"/>',shield:'<path d="M12 3l8 3v6c0 5-3.500 8-8 9-4.500-1-8-4-8-9V6z"/>',
+  alert:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.01"/>',chev:'<path d="M9 6l6 6-6 6"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',minus:'<path d="M5 12h14"/>',play:'<path d="M7 4l13 8-13 8z"/>',pause:'<path d="M8 4v16M16 4v16"/>',
+  copy:'<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/>',
+  flame:'<path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3 0-6 1-9z"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  trophy:'<path d="M8 4h8v6a4 4 0 0 1-8 0zM8 6H4v1a4 4 0 0 0 4 4M16 6h4v1a4 4 0 0 1-4 4M12 14v4M8 21h8"/>',
+  back:'<path d="M15 6l-6 6 6 6"/>',bulb:'<path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10c1 1 1 2 1 3h6c0-1 0-2 1-3a6 6 0 0 0-4-10z"/>',run:'<circle cx="14" cy="5" r="2"/><path d="M8 21l3-6 3 2v4M11 15l-1-5 4-2 3 4"/>'
+};
+function ic(n,c){return '<svg class="ico '+(c||'')+'" viewBox="0 0 24 24" aria-hidden="true">'+P[n]+'</svg>'}
+
+/* ---------- التنقل ---------- */
+function go(h){if(location.hash.slice(1)===h)render();else{location.hash=h}}
+window.addEventListener('hashchange',render);
+function route(){return (location.hash||'#home').slice(1)||'home'}
+
+/* ---------- الشاشات ---------- */
+function Welcome(){
+  return '<div class="wl-box"><div class="wl-logo">'+ic('pulse')+'</div><h1>توازن</h1><p class="tag">رحلة تعافيك تبدأ من هنا</p>'+
+  '<ul><li>فحص تعب سريع بأسئلة بسيطة، بدون ساعة أو جهاز</li><li>خطة استشفاء يومية مبنية على حالة جسمك</li><li>حسّن أداءك وقلّل خطر الإصابة</li></ul>'+
+  '<button class="btn" data-a="start">ابدأ رحلتك</button><button class="link" data-a="demo">جرّب ببيانات تجريبية</button></div>';
+}
+function Onb(){
+  var s=ui.step,body='',ok=false,title='',sub='';
+  function opts(list,key,withDesc){return '<div class="stack" role="radiogroup">'+list.map(function(o){
+    return '<button class="opt" role="radio" aria-checked="'+(ui[key]===o[0])+'" data-a="pick" data-k="'+key+'" data-v="'+o[0]+'"><span class="radio"></span><span><span>'+o[1]+'</span>'+(withDesc&&o[2]?'<br><span class="d">'+o[2]+'</span>':'')+'</span></button>'}).join('')+'</div>'}
+  if(s===0){title='ما رياضتك الأساسية؟';sub='نستخدمها لتخصيص التمارين والرسائل اليومية.';ok=!!ui.sport;
+    body='<label class="f">اسمك (اختياري)<input type="text" id="name" value="'+esc(ui.name)+'" maxlength="30" autocomplete="off"></label>'+
+    '<div class="grid2" role="radiogroup">'+SPORTS.map(function(o){return '<button class="opt sport" role="radio" aria-checked="'+(ui.sport===o[0])+'" data-a="pick" data-k="sport" data-v="'+o[0]+'"><span>'+o[1]+'</span></button>'}).join('')+'</div>'}
+  else if(s===1){title='كم حصة تدريبية تؤدي أسبوعياً؟';sub='هذا يساعدنا على تقدير حملك الطبيعي والتعب التراكمي.';ok=!!ui.sessions;body=opts(SESS,'sessions')}
+  else {title='ما هدفك الأساسي؟';sub='سنرتب التجربة اليومية من أجلك بناءً على هدفك.';ok=!!ui.goal;body=opts(GOALS,'goal',true)}
+  return '<div class="page"><div class="steps-bar"><button class="iconbtn" data-a="onb-back" aria-label="رجوع">'+ic('chev')+'</button><div class="seg">'+[0,1,2].map(function(i){return '<i class="'+(i<=s?'on':'')+'"></i>'}).join('')+'</div><span class="small muted num">'+(s+1)+' من 3</span></div>'+
+  '<div><h1>'+title+'</h1><p class="muted small">'+sub+'</p></div>'+body+
+  '<div class="sticky"><button class="btn" data-a="onb-next" '+(ok?'':'disabled')+'>'+(s===2?'ابدأ رحلتك':'التالي')+'</button></div></div>';
+}
+
+var QS=[
+  {k:'sleep',t:'كم ساعة نمت الليلة الماضية؟',h:'النوم أقوى مؤشر على استعداد جسمك.',o:[['lt5','أقل من 5 ساعات'],['5-6','5 إلى 6 ساعات'],['6-7','6 إلى 7 ساعات'],['7-8','7 إلى 8 ساعات'],['8+','8 ساعات أو أكثر']]},
+  {k:'sore',t:'ما شدة الشد العضلي العام اليوم؟',h:'الألم الموضعي نسجله في السؤال الأخير.',o:[['0','لا أشعر بشيء'],['1','خفيف'],['2','متوسط'],['3','شديد']]},
+  {k:'load',t:'كيف كان تدريبك أمس؟',h:'اختر ما يصف شدة التمرين ومدته.',o:[['0','لم أتدرب'],['1','خفيف'],['2','متوسط'],['3','شاق']]},
+  {k:'energy',t:'كيف مستوى طاقتك الآن؟',h:'قيّمها كما تشعر بها اللحظة.',o:[['5','ممتاز'],['4','جيد'],['3','عادي'],['2','منخفض'],['1','مُنهَك']]},
+  {k:'water',t:'كم شربت من الماء أمس؟',h:'الجفاف يرفع التعب ويبطئ الاستشفاء.',o:[['0','أقل من لتر'],['1','لتر إلى لترين'],['2','أكثر من لترين']]},
+  {k:'pains',t:'هل تشعر بألم في مكان محدد؟',h:'اختر المناطق المؤلمة ثم حدّد شدة كل منها.'}
+];
+function Test(){
+  if(!ui.t)ui.t={i:0,ans:{},pains:{}};
+  var t=ui.t,q=QS[t.i],body='',ok=true;
+  if(q.k==='pains'){
+    body='<div class="chipset">'+AREAS.map(function(a){return '<button class="chip" aria-pressed="'+(t.pains[a[0]]!=null)+'" data-a="area" data-v="'+a[0]+'">'+a[1]+'</button>'}).join('')+
+      '<button class="chip seg7" aria-pressed="'+(Object.keys(t.pains).length===0)+'" data-a="area-none">لا يوجد ألم</button></div>';
+    Object.keys(t.pains).forEach(function(k){body+='<div class="card"><div class="row"><b class="grow">'+AL[k]+'</b><b class="num" id="pv-'+k+'">'+t.pains[k]+' / 10</b></div><input type="range" min="1" max="10" step="1" value="'+t.pains[k]+'" data-pain="'+k+'" aria-label="شدة ألم '+AL[k]+'"><div class="row xs muted"><span class="grow">خفيف</span><span>شديد</span></div></div>'});
+  }else{
+    ok=t.ans[q.k]!=null;
+    body='<div class="stack" role="radiogroup">'+q.o.map(function(o){return '<button class="opt" role="radio" aria-checked="'+(t.ans[q.k]===o[0])+'" data-a="tq" data-v="'+o[0]+'"><span class="radio"></span><span>'+o[1]+'</span></button>'}).join('')+'</div>';
+  }
+  return '<div class="page"><div class="steps-bar"><button class="iconbtn" data-a="tq-back" aria-label="رجوع">'+ic('chev')+'</button><div class="seg">'+QS.map(function(_,i){return '<i class="'+(i<=t.i?'on':'')+'"></i>'}).join('')+'</div><span class="small muted num">'+(t.i+1)+' من '+QS.length+'</span></div>'+
+  '<div><h1>'+q.t+'</h1><p class="muted small">'+q.h+'</p></div>'+body+
+  '<div class="sticky"><button class="btn" data-a="tq-next" '+(ok?'':'disabled')+'>'+(t.i===QS.length-1?'احسب جاهزيتي':'التالي')+'</button></div></div>';
+}
+
+function areasText(pains,min){var n=[];for(var k in pains)if(+pains[k]>=min)n.push(AL[k]);return n.join(' و')}
+function Header(){return '<div class="topbar"><span class="brand">توازن</span>'+(S.demo?'<span class="pill warn">بيانات تجريبية</span>':'')+'</div>'}
+
+function Home(){
+  var d=today(),ck=ckOn(d),p=S.profile,name=p.name?('، '+esc(p.name)):'';
+  var h=Header()+'<div><div class="eyebrow">'+DAYS[new Date().getDay()]+' · '+d+'</div><h1>خطة الاستشفاء اليومية</h1></div>';
+  if(!ck){
+    h+='<div class="card tint ready"><div class="bubble">'+ic('pulse')+'</div><h2>مرحباً'+name+'</h2><p class="muted">أجب عن 6 أسئلة قصيرة وسنحسب جاهزيتك ونبني خطة اليوم. لا تحتاج إلى أي جهاز.</p><button class="btn" data-a="go" data-v="test">ابدأ فحص التعب</button></div>';
+    var last=ckBefore(d);
+    if(last)h+='<div class="card row"><div class="bubble">'+ic('cal')+'</div><div class="grow"><b>آخر فحص</b><div class="small muted">'+last.d+' · جاهزية '+last.score+'</div></div></div>';
+  }else{
+    var b=BANDS[ck.band],ids=buildPlan(ck.a,ck,p);
+    if(ck.flag)h+='<div class="alert" role="alert">'+ic('alert')+'<div><b>ألم شديد في '+areasText(ck.a.pains,7)+'</b><p>'+b.msg+'</p></div></div>';
+    h+='<div class="card ready"><span class="small muted">درجة الجاهزية</span><div class="score"><span>/ 100</span><b class="num">'+ck.score+'</b></div><span class="pill '+b.cls+'">'+b.label+'</span><p class="muted small">'+(ck.flag?'':b.msg)+'</p>'+
+    '<button class="link" data-a="explain" aria-expanded="'+ui.explain+'">'+(ui.explain?'إخفاء طريقة الحساب':'كيف حُسبت هذه الدرجة؟')+'</button>';
+    if(ui.explain){h+='<ul class="factors">'+ck.parts.map(function(x){return '<li><span>'+x.label+' <span class="muted">· '+esc(x.note)+'</span></span><span class="pen num '+(x.pen?'':'zero')+'">'+(x.pen?('−'+x.pen):'0')+'</span></li>'}).join('')+'<li><b>الناتج</b><b class="num">'+ck.score+'</b></li></ul><p class="xs muted">الدرجة = 100 ناقص نقاط العوامل أعلاه. القواعد ثابتة وقابلة للمراجعة.</p>'}
+    h+='<button class="btn sec sm" data-a="go" data-v="test">إعادة الفحص</button></div>';
+    var w=S.water[d]||0;
+    h+='<div class="tiles"><div class="tile">'+ic('moon')+'<b class="num">'+(SLEEP_H[ck.a.sleep]||'-')+'</b><span>ساعات النوم</span></div><div class="tile">'+ic('drop')+'<b>'+['منخفض','جيد','ممتاز'][ck.a.water]+'</b><span>الترطيب</span></div><div class="tile">'+ic('shield')+'<b class="num">'+ck.a.energy+'/5</b><span>الطاقة</span></div></div>';
+    h+=PlanList(ids,'خطة اليوم',true);h+=Coach(ck);
+  }
+  h+=WaterCard();
+  return '<div class="page">'+h+'</div>';
+}
+function Coach(ck){
+  var sl=slots(7).filter(function(o){return o.ck}).map(function(o){return o.ck});
+  var heavy=sl.filter(function(c){return +c.a.load===3}).length;
+  var avg=sl.length?sl.reduce(function(a,c){return a+c.score},0)/sl.length:ck.score,msg;
+  if(ck.flag)msg='سجّلت ألماً شديداً اليوم. الراحة أولاً، ولا تضغط على المنطقة المؤلمة.';
+  else if(heavy>=2||avg<60)msg='مؤشرات الأسبوع توحي بإرهاق متراكم. خفف شدة اليوم لتحافظ على لياقتك وتقلل خطر الإصابة.';
+  else msg='حملك هذا الأسبوع متوازن. حافظ على الإيقاع وأنهِ التدريب بالتمدد.';
+  return '<div class="card tint row" style="align-items:flex-start"><span class="bubble" style="background:var(--brand);color:#fff">'+ic('bulb')+'</span><div class="grow"><b>المدرب الافتراضي</b><p class="small muted">'+msg+'</p></div></div>';
+}
+function maxP(ck){var m=0;for(var k in ck.a.pains)m=Math.max(m,+ck.a.pains[k]);return m}
+function PlanList(ids,title,more){
+  var dn=doneIds(),mins=0;ids.forEach(function(i){mins+=EX[i].min});
+  return '<div><div class="row" style="margin-bottom:8px"><h2 class="grow">'+title+'</h2><span class="small muted num">'+dn.filter(function(i){return ids.indexOf(i)>-1}).length+' من '+ids.length+' · '+mins+' دقيقة</span>'+(more?'<button class="link" data-a="go" data-v="plan">عرض التفاصيل</button>':'')+'</div><div class="card list">'+
+  ids.map(function(i){var e=EX[i],dd=dn.indexOf(i)>-1;return '<button class="item '+(dd?'done':'')+'" data-a="go" data-v="ex-'+i+'"><span class="bubble">'+ic(dd?'check':'pulse')+'</span><span class="grow"><span class="t">'+e.t+'</span><br><span class="s num">'+e.min+' دقيقة · '+e.lv+'</span></span><svg class="chev" viewBox="0 0 24 24">'+P.chev+'</svg></button>'}).join('')+'</div></div>';
+}
+function WaterCard(){
+  var w=S.water[today()]||0,dots='';for(var i=0;i<8;i++)dots+='<i class="'+(i<w?'on':'')+'"></i>';
+  return '<div class="card stack"><div class="row"><span class="bubble">'+ic('drop')+'</span><div class="grow"><b>الماء اليوم</b><div class="small muted num">'+w+' من 8 أكواب</div></div><button class="iconbtn" data-a="water" data-v="-1" aria-label="إنقاص كوب">'+ic('minus')+'</button><button class="iconbtn" data-a="water" data-v="1" aria-label="إضافة كوب">'+ic('plus')+'</button></div><div class="water" aria-hidden="true">'+dots+'</div></div>';
+}
+
+function PlanTab(){
+  var ck=ckOn(today()),p=S.profile,h=Header()+'<h1>الخطة</h1>';
+  if(ck)h+=PlanList(buildPlan(ck.a,ck,p),'خطة اليوم');
+  else h+='<div class="card tint ready"><p class="muted">أجرِ فحص التعب أولاً لتظهر خطة اليوم.</p><button class="btn sm" data-a="go" data-v="test">ابدأ الفحص</button></div>';
+  var wk=0,t=new Date();for(var i=0;i<7;i++)if(ckOn(fmt(addDays(t,-i))))wk++;
+  h+='<div class="card stack"><b>هذا الأسبوع</b><div class="small muted num">سجّلت '+wk+' من 7 فحوصات. هدفك التدريبي: '+(SESS.filter(function(s){return s[0]===p.sessions})[0]||['','-'])[1]+' حصص أسبوعياً.</div><div class="water" aria-hidden="true">'+[0,1,2,3,4,5,6].map(function(i){return '<i class="'+(i<wk?'on':'')+'"></i>'}).join('')+'</div></div>';
+  h+='<h2>مكتبة التمارين</h2><div class="card list">'+Object.keys(EX).map(function(i){var e=EX[i];return '<button class="item" data-a="go" data-v="ex-'+i+'"><span class="bubble">'+ic('pulse')+'</span><span class="grow"><span class="t">'+e.t+'</span><br><span class="s">'+(e.area?AL[e.area]:'عام')+' · <span class="num">'+e.min+'</span> دقيقة</span></span><svg class="chev" viewBox="0 0 24 24">'+P.chev+'</svg></button>'}).join('')+'</div>';
+  return '<div class="page">'+h+'</div>';
+}
+
+function Exercise(id){
+  var e=EX[id];if(!e)return '<div class="page"><p>التمرين غير موجود.</p><button class="btn" data-a="go" data-v="home">رجوع</button></div>';
+  var ck=ckOn(today()),ids=ck?buildPlan(ck.a,ck,S.profile):[],pos=ids.indexOf(id);
+  var total=e.min*60;if(!ui.tm||ui.tm.id!==id)ui.tm={id:id,left:total,total:total,running:false};
+  var m=ui.tm,cur=Math.min(e.steps.length-1,Math.floor((m.total-m.left)/m.total*e.steps.length));
+  var C=2*Math.PI*78;
+  return '<div class="page"><div class="steps-bar"><button class="iconbtn" data-a="go" data-v="'+(pos>-1?'home':'plan')+'" aria-label="رجوع">'+ic('chev')+'</button><span class="small muted">جلسة موجّهة</span></div>'+
+  '<div><h1>'+e.t+'</h1><p class="muted small">'+e.d+'</p></div>'+
+  '<div class="card timer"><div class="row" style="width:100%"><span class="pill">'+ic('play')+'جلسة صوتية موجّهة</span><span class="grow"></span><button class="chip seg7" aria-pressed="'+(ui.voice!==false)+'" data-a="voice">الصوت</button></div><div class="ring"><svg viewBox="0 0 176 176"><circle class="bg" cx="88" cy="88" r="78" fill="none" stroke-width="10"/><circle class="fg" id="rfg" cx="88" cy="88" r="78" fill="none" stroke-width="10" stroke-linecap="round" stroke-dasharray="'+C.toFixed(1)+'" stroke-dashoffset="'+(C*(1-(m.total-m.left)/m.total)).toFixed(1)+'"/></svg><div class="t" id="tmt">'+mmss(m.left)+'</div></div>'+
+  '<div class="row" style="width:100%"><button class="btn" data-a="tt">'+ic(m.running?'pause':'play')+(m.running?'إيقاف مؤقت':(m.left<m.total?'متابعة':'ابدأ الجلسة'))+'</button>'+(m.left<m.total?'<button class="btn sec" style="width:auto" data-a="tr">من جديد</button>':'')+'</div></div>'+
+  '<div class="tiles"><div class="tile">'+ic('cal')+'<b class="num">'+e.min+'</b><span>دقائق</span></div><div class="tile">'+ic('flame')+'<b class="num">'+e.sets+'</b><span>مجموعات</span></div><div class="tile">'+ic('shield')+'<b>'+e.lv+'</b><span>الشدة</span></div></div>'+
+  '<div class="alert warn" role="note">'+ic('alert')+'<div><b>تنبيه مهم</b><p>'+e.caution+' توقف فوراً إذا ازداد الألم أو شعرت بدوار أو غثيان.</p></div></div>'+
+  '<h2>الخطوات</h2><ol class="steps" id="stl">'+e.steps.map(function(s,i){return '<li class="'+(i===cur&&m.running?'cur':'')+'"><span class="n num">'+(i+1)+'</span><span>'+s+'</span></li>'}).join('')+'</ol>'+
+  '<div class="sticky"><div class="small muted" style="text-align:center">'+(pos>-1?('التمرين '+(pos+1)+' من '+ids.length+' في خطة اليوم'):'من مكتبة التمارين')+'</div><button class="btn" data-a="finish" data-v="'+id+'">'+ic('check')+'إنهاء الجلسة</button></div></div>';
+}
+function say(t){try{if(!window.speechSynthesis||ui.voice===false)return;speechSynthesis.cancel();var u=new SpeechSynthesisUtterance(t);u.lang='ar-SA';speechSynthesis.speak(u)}catch(e){}}
+function mmss(s){return z(Math.floor(s/60))+':'+z(s%60)}
+function paintTimer(){
+  var m=ui.tm;if(!m)return;var e=EX[m.id];
+  var t=document.getElementById('tmt');if(t)t.textContent=mmss(m.left);
+  var f=document.getElementById('rfg');if(f){var C=2*Math.PI*78;f.setAttribute('stroke-dashoffset',(C*(1-(m.total-m.left)/m.total)).toFixed(1))}
+  var cur=Math.min(e.steps.length-1,Math.floor((m.total-m.left)/m.total*e.steps.length));
+  if(m.running&&m.spoken!==cur){m.spoken=cur;say(e.steps[cur])}
+  var li=document.querySelectorAll('#stl li');for(var i=0;i<li.length;i++)li[i].className=(i===cur&&m.running)?'cur':'';
+}
+function tick(){var m=ui.tm;if(!m||!m.running){clearInterval(iv);iv=null;return}m.left--;if(m.left<=0){m.left=0;m.running=false;clearInterval(iv);iv=null;render();return}paintTimer()}
+
+/* ---------- التقدم ---------- */
+function slots(n){var a=[],t=new Date();for(var i=n-1;i>=0;i--){var d=addDays(t,-i);a.push({d:fmt(d),dow:d.getDay(),day:d.getDate(),ck:ckOn(fmt(d))})}return a}
+function BarChart(sl){
+  var W=320,H=170,L=26,B=22,T=16,iw=W-L-4,ih=H-B-T,n=sl.length,step=iw/n,bw=Math.max(3,step*(n>10?0.62:0.58)),s='';
+  [0,25,50,75,100].forEach(function(v){var y=T+ih-ih*v/100;s+='<line class="grid" x1="'+L+'" x2="'+W+'" y1="'+y+'" y2="'+y+'"/><text x="'+(L-5)+'" y="'+(y+3)+'" text-anchor="end">'+v+'</text>'});
+  sl.forEach(function(o,i){
+    var cx=L+step*i+step/2,last=i===n-1;
+    if(o.ck){var h=ih*o.ck.score/100;s+='<rect class="bar'+(last?' today':'')+'" x="'+(cx-bw/2)+'" y="'+(T+ih-h)+'" width="'+bw+'" height="'+h+'" rx="3"/>';
+      if(last)s+='<text class="val" x="'+cx+'" y="'+(T+ih-h-4)+'" text-anchor="middle">'+o.ck.score+'</text>'}
+    var lab=n<=7?DAYS[o.dow]:((i%5===0||last)?String(o.day):'');
+    if(lab)s+='<text x="'+cx+'" y="'+(H-6)+'" text-anchor="middle">'+lab+'</text>';
+  });
+  return '<div dir="ltr"><svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="رسم أعمدة لدرجة الجاهزية اليومية">'+s+'</svg></div>';
+}
+var LC=['var(--accent)','var(--clay)','var(--blue)','var(--deep)','var(--muted)'];
+function PainChart(sl,areas){
+  var W=320,H=170,L=22,B=22,T=12,iw=W-L-10,ih=H-B-T,n=sl.length,step=iw/(n-1||1),s='';
+  [0,5,10].forEach(function(v){var y=T+ih-ih*v/10;s+='<line class="grid" x1="'+L+'" x2="'+W+'" y1="'+y+'" y2="'+y+'"/><text x="'+(L-5)+'" y="'+(y+3)+'" text-anchor="end">'+v+'</text>'});
+  areas.forEach(function(a,ai){
+    var pts=[];sl.forEach(function(o,i){if(o.ck){pts.push([L+step*i+(n>1?0:iw/2),T+ih-ih*((+o.ck.a.pains[a]||0)/10)])}});
+    var col=LC[ai%LC.length];
+    s+='<polyline fill="none" style="stroke:'+col+'" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round" points="'+pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1)}).join(' ')+'"/>';
+    pts.forEach(function(p,i){if(n<=7||i===pts.length-1)s+='<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="3.4" style="fill:'+col+'"/>'});
+  });
+  sl.forEach(function(o,i){var lab=n<=7?DAYS[o.dow]:((i%5===0||i===n-1)?String(o.day):'');if(lab)s+='<text x="'+(L+step*i)+'" y="'+(H-6)+'" text-anchor="middle">'+lab+'</text>'});
+  return '<div dir="ltr"><svg class="chart" viewBox="0 0 '+W+' '+H+'" role="img" aria-label="رسم خطي لمستوى الألم">'+s+'</svg></div>';
+}
+function Progress(){
+  var sl=slots(ui.range),cks=sl.filter(function(o){return o.ck}).map(function(o){return o.ck}),n=cks.length;
+  var h=Header()+'<div class="row"><h1 class="grow">تقدمك</h1><div class="chipset" role="group" aria-label="الفترة"><button class="chip seg7" aria-pressed="'+(ui.range===7)+'" data-a="range" data-v="7">7 أيام</button><button class="chip seg7" aria-pressed="'+(ui.range===30)+'" data-a="range" data-v="30">30 يوماً</button></div></div>';
+  if(!n)return '<div class="page">'+h+'<div class="card tint ready"><p class="muted">لا توجد فحوصات في هذه الفترة. أجرِ فحص اليوم لتبدأ الرسوم.</p><button class="btn sm" data-a="go" data-v="test">ابدأ الفحص</button></div></div>';
+  var avg=Math.round(cks.reduce(function(s,c){return s+c.score},0)/n),best=cks.reduce(function(a,c){return c.score>a.score?c:a},cks[0]);
+  var sleepAvg=(cks.reduce(function(s,c){return s+(SLEEP_H[c.a.sleep]||0)},0)/n).toFixed(1);
+  var areaSet={};cks.forEach(function(c){for(var k in c.a.pains)if(+c.a.pains[k]>0)areaSet[k]=1});
+  var areas=Object.keys(areaSet);
+  h+='<div class="tiles"><div class="tile"><b class="num">'+avg+'</b><span>متوسط الجاهزية</span></div><div class="tile"><b class="num">'+n+'/'+ui.range+'</b><span>أيام الفحص</span></div><div class="tile"><b class="num">'+areas.length+'</b><span>مناطق ألم</span></div></div>';
+  var pct=n/ui.range;
+  h+='<div class="card" style="background:var(--brand);color:#fff;border-color:var(--brand)"><b>'+(pct>=0.7?'أنت ملتزم بجدولك':'سجّل فحصك أكثر')+'</b><p class="small" style="opacity:.92">'+(pct>=0.7?('أجريت '+n+' فحوصات خلال '+ui.range+' أيام. استمر على هذا الإيقاع.'):('أجريت '+n+' فحوصات من '+ui.range+'. الفحص اليومي يجعل الدرجة أدق.'))+'</p></div>';
+  var heavyN=cks.filter(function(c){return +c.a.load===3}).length,loadAvg=cks.reduce(function(a,c){return a+(+c.a.load||0)},0)/n;
+  var loadL=loadAvg<1?'منخفض':loadAvg<=2?'متوازن':'مرتفع',risk=heavyN>=3?'مرتفع':heavyN>=2?'متوسط':'منخفض';
+  h+='<div class="grid2"><div class="tile">'+ic('pulse')+'<b>'+loadL+'</b><span>حمل التدريب</span></div><div class="tile">'+ic('shield')+'<b>'+risk+'</b><span>خطر الإفراط</span></div><div class="tile">'+ic('moon')+'<b class="num">'+sleepAvg+'</b><span>متوسط النوم (ساعات)</span></div><div class="tile">'+ic('flame')+'<b class="num">'+streak()+'</b><span>أيام متتالية</span></div></div>';
+  h+='<div class="card stack"><h2>اتجاه الجاهزية</h2><p class="small muted num">متوسط الجاهزية خلال الفترة '+avg+' من 100، وأعلى قيمة '+best.score+' بتاريخ '+best.d+'.</p>'+BarChart(sl)+'</div>';
+  if(areas.length){
+    var msgs=[],warn=null;
+    areas.forEach(function(a){var f=cks[0].a.pains[a]||0,l=cks[cks.length-1].a.pains[a]||0;
+      if(cks.length>1){msgs.push('ألم '+AL[a]+(l<f?(' انخفض من '+f+' إلى '+l):l>f?(' ارتفع من '+f+' إلى '+l):(' ثابت عند '+l))+' من 10.')}
+      else msgs.push('ألم '+AL[a]+' '+l+' من 10.');
+      if(l>=5&&l>f)warn=a});
+    h+='<div class="card stack"><h2>مستوى الألم</h2><p class="small muted num">'+msgs.join(' ')+'</p>'+PainChart(sl,areas)+'<div class="legend">'+areas.map(function(a,i){return '<span><i style="background:'+LC[i%LC.length]+'"></i>'+AL[a]+'</span>'}).join('')+'</div></div>';
+    if(warn)h+='<div class="alert warn" role="alert">'+ic('alert')+'<div><b>ألم '+AL[warn]+' في ارتفاع</b><p>خفّف الحمل على هذه المنطقة وخذ يوم راحة. إذا استمر الألم أو زاد فراجع أخصائي علاج طبيعي.</p></div></div>';
+  }
+  var total=S.checkins.length;
+  h+='<div class="card stack"><h2>الأوسمة</h2><div class="badges">'+
+   [['flame','بداية قوية',total>=1],['cal','أسبوع كامل',streak()>=7],['trophy','بطل الشهر',streak()>=30]].map(function(b){return '<div class="badge '+(b[2]?'on':'')+'"><span class="c">'+ic(b[0])+'</span><span>'+b[1]+'</span></div>'}).join('')+'</div></div>';
+  return '<div class="page">'+h+'</div>';
+}
+
+/* ---------- الحساب ---------- */
+function opt(list,val){return list.map(function(o){return '<option value="'+o[0]+'"'+(o[0]===val?' selected':'')+'>'+o[1]+'</option>'}).join('')}
+function Account(){
+  var p=S.profile,doneAll=0;for(var k in S.done)doneAll+=S.done[k].length;
+  var h=Header()+'<div class="card ready">'+(p.photo?'<img class="avatar" src="'+p.photo+'" alt="صورتك">':'<div class="bubble" style="width:72px;height:72px;font-size:28px;font-family:var(--f-display);font-weight:700">'+esc((p.name||'ت').charAt(0))+'</div>')+'<label class="link" for="pphoto" style="cursor:pointer">'+(p.photo?'تغيير الصورة':'إضافة صورة')+'</label><input type="file" id="pphoto" accept="image/*" hidden><h2>'+esc(p.name||'رياضي')+'</h2><div class="row" style="flex-wrap:wrap;justify-content:center"><span class="pill">'+SPORT_L[p.sport]+'</span><span class="pill warn">'+GOAL_L[p.goal]+'</span></div></div>'+
+  '<div class="tiles"><div class="tile"><b class="num">'+S.checkins.length+'</b><span>إجمالي الفحوصات</span></div><div class="tile"><b class="num">'+doneAll+'</b><span>تمارين مكتملة</span></div><div class="tile"><b class="num">'+streak()+'</b><span>أيام متتالية</span></div></div>'+
+  '<h2>التفضيلات</h2><div class="card stack"><label class="f">الاسم<input type="text" id="pname" value="'+esc(p.name||'')+'" maxlength="30"></label><label class="f">الرياضة<select id="psport" data-pref="sport">'+opt(SPORTS,p.sport)+'</select></label><label class="f">الحصص أسبوعياً<select id="psess" data-pref="sessions">'+opt(SESS,p.sessions)+'</select></label><label class="f">هدف الاستشفاء<select id="pgoal" data-pref="goal">'+opt(GOALS,p.goal)+'</select></label><label class="f">اللغة<select id="plang" disabled><option>العربية</option></select></label></div>'+
+  '<h2>التذكيرات</h2><div class="card list"><div class="item"><span class="grow">تذكير فحص الصباح</span><button class="switch" role="switch" aria-checked="'+!!S.prefs.morning+'" aria-label="تذكير فحص الصباح" data-a="pref" data-v="morning"></button></div><div class="item"><span class="grow">تذكير الماء والتمدد</span><button class="switch" role="switch" aria-checked="'+!!S.prefs.plan+'" aria-label="تذكير الماء والتمدد" data-a="pref" data-v="plan"></button></div></div><p class="xs muted">يحفظ التطبيق تفضيلك. الإشعارات الفعلية تتطلب نسخة مثبتة على الهاتف.</p>'+
+  '<h2>التكامل (اختياري)</h2><div class="card list">'+[['Apple Health','shield'],['Google Fit','pulse'],['Strava','run']].map(function(x){return '<div class="item"><span class="bubble">'+ic(x[1])+'</span><b class="grow" dir="ltr" style="text-align:start">'+x[0]+'</b><span class="small muted">قريباً</span></div>'}).join('')+'</div><p class="xs muted">توازن يعمل بالأسئلة فقط ولا يحتاج أي جهاز. الربط سيُضاف لاحقاً كخيار.</p>'+
+  '<h2>بياناتك</h2><div class="card stack"><p class="small muted">كل البيانات محفوظة على هذا الجهاز فقط. يمكنك نسخها كملف CSV لتحليلها في تقرير المشروع.</p><button class="btn sec" data-a="csv">'+ic('copy')+'نسخ البيانات (CSV)</button>'+(ui.csv?'<textarea id="csvbox" readonly aria-label="بيانات CSV">'+esc(ui.csv)+'</textarea><p class="xs muted">إذا لم يعمل النسخ التلقائي فحدد النص أعلاه وانسخه يدوياً.</p>':'')+
+  (S.demo?'<button class="btn sec" data-a="clear-demo">البدء من الصفر وحذف البيانات التجريبية</button>':'')+
+  (ui.confirmReset?'<div class="alert" role="alert"><div><b>حذف كل البيانات؟</b><p>لا يمكن التراجع عن هذا الإجراء.</p></div></div><div class="row"><button class="btn danger" data-a="reset-yes">نعم، احذف</button><button class="btn sec" data-a="reset-no">إلغاء</button></div>':'<button class="btn danger" data-a="reset">حذف كل بياناتي</button>')+'</div>'+
+  '<button class="btn sec" style="color:var(--danger)" data-a="logout">'+ic('back')+'تسجيل الخروج</button>'+
+  '<p class="disc">توازن أداة للتوعية ولا تغني عن مراجعة الطبيب أو أخصائي العلاج الطبيعي. محتوى التمارين تجريبي ولم يُراجع بعد من مختص.</p>';
+  return '<div class="page">'+h+'</div>';
+}
+function csvText(){
+  var r=['date,readiness,sleep_h,soreness,yesterday_load,energy,water,max_pain,pain_areas'];
+  S.checkins.forEach(function(c){var a=c.a;r.push([c.d,c.score,SLEEP_H[a.sleep],a.sore,a.load,a.energy,a.water,maxP(c),Object.keys(a.pains||{}).map(function(k){return k+':'+a.pains[k]}).join('|')].join(','))});
+  return r.join('\n');
+}
+
+function Nav(h){
+  var it=[['home','الرئيسية','home'],['plan','الخطة','list'],['progress','التقدم','chart'],['account','الحساب','user']];
+  var cur=h.indexOf('ex-')===0||h==='test'?'home':h;
+  return '<nav class="nav" aria-label="التنقل"><div class="nav-in">'+it.map(function(x){return '<button data-a="go" data-v="'+x[0]+'"'+(cur===x[0]?' aria-current="page"':'')+'>'+ic(x[2])+'<span>'+x[1]+'</span></button>'}).join('')+'</div></nav>';
+}
+
+/* ---------- العرض ---------- */
+function render(){
+  var h=route(),html='',nav=false,wl=false;
+  if(h.indexOf('ex-')!==0&&iv){clearInterval(iv);iv=null;if(ui.tm)ui.tm.running=false}
+  if(!S.profile||ui.out){if(ui.onb&&!S.profile)html=Onb();else{html=Welcome();wl=true}}
+  else if(h==='test')html=Test();
+  else if(h.indexOf('ex-')===0)html=Exercise(h.slice(3));
+  else if(h==='plan'){html=PlanTab();nav=true}
+  else if(h==='progress'){html=Progress();nav=true}
+  else if(h==='account'){html=Account();nav=true}
+  else{html=Home();nav=true;h='home'}
+  app.className=wl?'wl':'';
+  var sy=window.scrollY;app.innerHTML=html+(nav||h==='test'||h.indexOf('ex-')===0?'':'')+(nav?Nav(h):'');
+  if(h.indexOf('ex-')===0&&ui.tm&&ui.tm.running&&!iv)iv=setInterval(tick,1000);
+  window.scrollTo(0,/^(home|plan|progress|account)$/.test(h)&&sy?sy:0);
+}
+
+/* ---------- الأحداث ---------- */
+app.addEventListener('click',function(ev){
+  var el=ev.target.closest('[data-a]');if(!el)return;
+  var a=el.getAttribute('data-a'),v=el.getAttribute('data-v');
+  switch(a){
+    case 'go':if(v==='test')ui.t={i:0,ans:{},pains:{}};go(v);break;
+    case 'start':if(S.profile){ui.out=false;go('home')}else{ui.onb=true;ui.step=0;render()}break;
+    case 'logout':ui.out=true;go('home');break;
+    case 'demo':seedDemo();ui.onb=false;go('home');break;
+    case 'pick':ui[el.getAttribute('data-k')]=v;render();break;
+    case 'onb-back':if(ui.step>0){ui.step--;render()}else{ui.onb=false;render()}break;
+    case 'onb-next':
+      if(ui.step<2){ui.step++;render()}
+      else{S.profile={name:ui.name.trim(),sport:ui.sport,sessions:ui.sessions,goal:ui.goal};save();ui.onb=false;go('test');ui.t={i:0,ans:{},pains:{}};render()}
+      break;
+    case 'tq':ui.t.ans[QS[ui.t.i].k]=v;render();break;
+    case 'tq-back':if(ui.t.i>0){ui.t.i--;render()}else go('home');break;
+    case 'area':if(ui.t.pains[v]!=null)delete ui.t.pains[v];else ui.t.pains[v]=3;render();break;
+    case 'area-none':ui.t.pains={};render();break;
+    case 'tq-next':
+      if(ui.t.i<QS.length-1){ui.t.i++;render()}
+      else{var ans=ui.t.ans;addCheckin(today(),{sleep:ans.sleep,sore:ans.sore,load:ans.load,energy:ans.energy,water:ans.water,pains:JSON.parse(JSON.stringify(ui.t.pains))});S.demo=S.demo&&true;save();ui.t=null;ui.explain=true;go('home')}
+      break;
+    case 'explain':ui.explain=!ui.explain;render();break;
+    case 'water':var d=today();S.water[d]=Math.max(0,Math.min(8,(S.water[d]||0)+(+v)));save();render();break;
+    case 'range':ui.range=+v;render();break;
+    case 'tt':
+      ui.tm.running=!ui.tm.running;if(ui.tm.running&&!iv)iv=setInterval(tick,1000);if(!ui.tm.running){clearInterval(iv);iv=null;try{speechSynthesis.cancel()}catch(e){}}render();if(ui.tm.running)paintTimer();break;
+    case 'voice':ui.voice=ui.voice===false;if(ui.voice===false){try{speechSynthesis.cancel()}catch(e){}}render();break;
+    case 'tr':ui.tm.left=ui.tm.total;ui.tm.running=false;clearInterval(iv);iv=null;render();break;
+    case 'finish':
+      var dd=today();S.done[dd]=S.done[dd]||[];if(S.done[dd].indexOf(v)<0)S.done[dd].push(v);save();
+      var ck=ckOn(dd),ids=ck?buildPlan(ck.a,ck,S.profile):[],pos=ids.indexOf(v);
+      ui.tm=null;clearInterval(iv);iv=null;
+      if(pos>-1&&pos<ids.length-1)go('ex-'+ids[pos+1]);else go(pos>-1?'home':'plan');break;
+    case 'pref':S.prefs[v]=!S.prefs[v];save();render();break;
+    case 'csv':
+      ui.csv=csvText();
+      try{navigator.clipboard.writeText(ui.csv).then(function(){},function(){})}catch(e){}
+      render();setTimeout(function(){var b=document.getElementById('csvbox');if(b){try{b.focus();b.select()}catch(e){}}},30);break;
+    case 'clear-demo':S={profile:S.profile,checkins:[],water:{},done:{},prefs:S.prefs,demo:false};save();render();break;
+    case 'reset':ui.confirmReset=true;render();break;
+    case 'reset-no':ui.confirmReset=false;render();break;
+    case 'reset-yes':S={profile:null,checkins:[],water:{},done:{},prefs:{morning:true,plan:false},demo:false};save();ui={onb:false,step:0,name:'',sport:null,sessions:null,goal:null,t:null,explain:false,range:7,tm:null,csv:'',confirmReset:false};go('home');break;
+  }
+});
+app.addEventListener('input',function(ev){
+  var t=ev.target;
+  if(t.id==='name')ui.name=t.value;
+  else if(t.hasAttribute('data-pain')){var k=t.getAttribute('data-pain');ui.t.pains[k]=+t.value;var l=document.getElementById('pv-'+k);if(l)l.textContent=t.value+' / 10'}
+  else if(t.id==='pname'){S.profile.name=t.value.trim();save()}
+});
+app.addEventListener('change',function(ev){
+  var t=ev.target,k=t.getAttribute&&t.getAttribute('data-pref');
+  if(t.id==='pphoto'&&t.files&&t.files[0]){var fr=new FileReader();fr.onload=function(){var im=new Image();im.onload=function(){var c=document.createElement('canvas');c.width=c.height=160;var cx=c.getContext('2d'),m=Math.min(im.width,im.height);cx.drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,160,160);S.profile.photo=c.toDataURL('image/jpeg',0.8);save();render()};im.src=fr.result};fr.readAsDataURL(t.files[0]);return}
+  if(k){S.profile[k]=t.value;save();render()}
+});
+render();
+})();
+</script>
+
+</body>
+</html>
