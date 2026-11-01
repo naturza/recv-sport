@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RECV SPORT FIRST AID</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f7f8;--card:#fff;--ink:#12212b;--mute:#5d6f7a;--line:#dbe4e8;--brand:#0e7c86;--brand2:#e3f4f5;--red:#d92d20;--red2:#fdecea;--amber:#b54708;--amber2:#fff4e5;--user:#12212b;--userink:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e171d;--card:#16232b;--ink:#e8f0f3;--mute:#95a8b2;--line:#27394382;--brand:#35c2cd;--brand2:#12343a;--red:#ff6b5e;--red2:#3a1a17;--amber:#ffb870;--amber2:#37270f;--user:#35c2cd;--userink:#08262a}}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{font-family:Cairo,Tahoma,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;max-width:720px;margin:0 auto;font-size:16px;line-height:1.7}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--card);z-index:10}
+header{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--card);border-bottom:1px solid var(--line)}
+header .logo{width:36px;height:36px;border-radius:10px;background:var(--brand);color:#fff;display:grid;place-items:center;font-weight:800}
+header h1{font-size:16px;margin:0;line-height:1.2}header small{color:var(--mute)}
+#back{margin-inline-start:auto;border:1px solid var(--line);background:none;color:var(--ink);border-radius:10px;padding:4px 12px;font:inherit;cursor:pointer}
+main{flex:1;overflow-y:auto;padding:14px}
+nav{display:flex;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+nav button{flex:1;border:0;background:none;color:var(--mute);padding:8px 2px;font:inherit;font-size:12px;cursor:pointer}
+nav button span{display:block;font-size:20px;line-height:1.2}nav button.on{color:var(--brand);font-weight:800}
+nav button.sos{color:var(--red);font-weight:800}
+button,input,textarea,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.card h3{margin:0 0 6px;font-size:16px}
+.btn{border:0;border-radius:12px;padding:10px 16px;background:var(--brand);color:#fff;font-weight:600;cursor:pointer;text-decoration:none;display:inline-block}
+.btn.red{background:var(--red);color:#fff}.btn.ghost{background:var(--brand2);color:var(--brand)}
+.btn.big{width:100%;text-align:center;font-size:18px;padding:14px}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 4px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;line-height:1.35}
+.tile i{display:block;font-style:normal;font-size:28px;margin-bottom:4px}
+.tile:hover{border-color:var(--brand)}
+.hero{background:var(--red2);border:1px solid var(--red);border-radius:16px;padding:14px;margin-bottom:12px}
+.hero h2{margin:0 0 4px;color:var(--red);font-size:18px}
+.note{background:var(--amber2);color:var(--amber);border-radius:12px;padding:10px 12px;font-size:14px;margin-bottom:12px}
+.tag{display:inline-block;background:var(--brand2);color:var(--brand);border-radius:99px;padding:2px 10px;font-size:13px;margin:2px}
+ul,ol{margin:4px 0;padding-inline-start:22px}
+.sec{border-inline-start:4px solid var(--brand);padding-inline-start:10px;margin:12px 0}
+.sec.no{border-color:var(--red)}.sec.ask{border-color:var(--amber)}
+.sec h4{margin:0}
+/* chat */
+.chat{display:flex;flex-direction:column;height:100%}
+.msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding-bottom:8px}
+.m{max-width:88%;padding:10px 14px;border-radius:18px}
+.m.u{align-self:flex-start;background:var(--user);color:var(--userink);border-end-start-radius:4px}
+.m.a{align-self:flex-end;background:var(--card);border:1px solid var(--line);border-end-end-radius:4px}
+.m.a.alert{background:var(--red2);border-color:var(--red)}
+.m img{max-width:100%;border-radius:12px;display:block;margin-bottom:6px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:99px;padding:3px 12px;font-size:13px;cursor:pointer}
+.composer{display:flex;gap:6px;align-items:flex-end;background:var(--card);border:1px solid var(--line);border-radius:22px;padding:6px 8px;margin-top:6px}
+.composer textarea{flex:1;border:0;background:none;resize:none;max-height:90px;padding:6px;outline:none}
+.ib{border:0;background:var(--brand2);color:var(--brand);border-radius:50%;width:38px;height:38px;font-size:18px;cursor:pointer}
+.ib.send{background:var(--brand);color:#fff}
+/* forms */
+label{display:block;font-weight:600;margin:10px 0 4px;font-size:14px}
+input[type=text],input[type=date],input[type=time],input[type=tel],input[type=number],select,textarea.f{width:100%;border:1px solid var(--line);background:var(--bg);border-radius:10px;padding:8px 10px}
+.body-map{display:block;margin:auto;max-width:210px;width:60%}
+.z{fill:var(--brand2);stroke:var(--brand);stroke-width:2;cursor:pointer}.z:hover,.z.on{fill:var(--brand);fill-opacity:.6}
+.thumb{width:72px;height:72px;object-fit:cover;border-radius:10px}
+.modal{position:fixed;inset:0;background:#0009;display:grid;place-items:center;padding:20px;z-index:20}
+.modal .card{max-width:420px;margin:0}
+.vid{aspect-ratio:16/9;background:#0b1a20;border-radius:12px;display:grid;place-items:center;color:#9fb3bc;font-size:40px;margin-bottom:8px}
+
+#mode,#menu{border:1px solid var(--line);background:none;color:var(--ink);border-radius:10px;padding:4px 10px;font:inherit;font-size:13px;cursor:pointer}
+#mode{margin-inline-start:auto}#back{margin-inline-start:0}#menu{border:0;font-size:22px;padding:0 4px}
+.welcome{display:none}
+body[data-mode=chat]{--bg:#fff;--card:#fff;--ink:#0d0d0d;--mute:#6b6b6b;--line:#e5e5e5;--brand:#10a37f;--brand2:#f0f0f0;--user:#f0f0f0;--userink:#0d0d0d}
+@media (prefers-color-scheme:dark){body[data-mode=chat]{--bg:#212121;--card:#2a2a2a;--ink:#ececec;--mute:#a0a0a0;--line:#3a3a3a;--brand:#19c37d;--brand2:#343434;--user:#303030;--userink:#ececec;--red2:#3a1a17}}
+body[data-mode=chat] nav{display:none}body[data-mode=chat]::before{background:var(--bg)}body[data-mode=chat] header{background:var(--bg);border:0}
+body[data-mode=chat] .logo{background:none;color:var(--ink);font-size:22px;border:1px solid var(--line)}
+body[data-mode=chat] .m{max-width:100%}body[data-mode=chat] .m.u{background:var(--user);color:var(--userink);border-radius:20px;max-width:85%;border:0}
+body[data-mode=chat] .m.a{background:none;border:0;padding-inline:2px;align-self:stretch;max-width:100%}
+body[data-mode=chat] .m.a.alert{background:var(--red2);border:1px solid var(--red);padding:10px 14px;border-radius:16px}
+body[data-mode=chat] .composer{border-radius:26px;background:var(--brand2);border:0;padding:8px 10px}
+body[data-mode=chat] .ib{background:none;color:var(--ink)}body[data-mode=chat] .ib.send{background:var(--ink);color:var(--bg)}
+body[data-mode=chat] .chip{border-radius:14px;background:none}
+body[data-mode=chat] .btn{background:var(--ink);color:var(--bg)}body[data-mode=chat] .btn.ghost{background:var(--brand2);color:var(--ink)}body[data-mode=chat] .btn.red{background:var(--red);color:#fff}
+body[data-mode=chat] .tag{background:var(--brand2);color:var(--ink)}body[data-mode=chat] .z{fill:var(--brand2);stroke:var(--mute)}
+body[data-mode=chat] .welcome{display:block;text-align:center;margin:6vh 0 14px}.welcome h2{font-size:26px;margin:0}
+#drawer{position:fixed;inset:0;z-index:30;display:none}#drawer.open{display:flex}
+#drawer .sh{flex:1;background:#0008}#drawer .pn{width:270px;max-width:80%;background:var(--card);padding:16px 12px;padding-top:calc(16px + env(safe-area-inset-top,0px));overflow-y:auto}
+#drawer .pn button{display:block;width:100%;text-align:start;border:0;background:none;color:var(--ink);padding:10px 12px;border-radius:10px;cursor:pointer}
+#drawer .pn button:hover{background:var(--brand2)}#drawer h5{margin:12px 12px 4px;color:var(--mute);font-weight:600}
+</style></head><body>
+<header><button id="menu" aria-label="القائمة" hidden>☰</button><div class="logo">R</div><div><h1>RECV SPORT FIRST AID</h1><small>الإسعافات الأولية الرياضية</small></div><button id="mode" aria-label="تبديل الواجهة"></button><button id="back" hidden>رجوع</button></header>
+<main id="main"></main>
+<nav id="nav"></nav><div id="drawer"><div class="pn" id="dp"></div><div class="sh"></div></div>
+<input type="file" id="file" accept="image/*" hidden>
+<script>
+"use strict";
+const $=s=>document.querySelector(s);
+const INJ=[
+{id:"bruise",e:"🟣",n:"الكدمات",k:/كدم|رضّ|رض|ازرق|تورم خفيف/,sg:["ألم موضعي عند اللمس","تغيّر لون الجلد (أحمر ثم أزرق/بنفسجي)","تورم خفيف"],st:["أوقف النشاط وأرح المنطقة.","ضع كمادة باردة ملفوفة بقماش 10–20 دقيقة، وكرّرها كل ساعتين خلال اليوم الأول.","اضغط برفق بضمادة مرنة، وارفع الجزء المصاب إن أمكن."],av:["التدليك القوي للمنطقة","وضع الثلج مباشرة على الجلد","الحرارة في أول 48 ساعة","العودة للعب مع وجود ألم"],sk:["تورم كبير وسريع أو ألم شديد","عدم القدرة على تحريك الطرف أو تحمّل الوزن","كدمة لا تتحسن بعد أيام","ضربة قوية على الرأس أو البطن أو الصدر"]},
+{id:"ankle",e:"🦶",n:"التواء الكاحل",k:/كاحل|التواء|التوى|التوا/,sg:["ألم وتورم حول الكاحل","كدمة بعد الإصابة","صعوبة في الدوس أو المشي"],st:["توقف فوراً عن اللعب وأرح القدم.","ضع كمادة باردة ملفوفة 15–20 دقيقة كل 2–3 ساعات.","ضع ضمادة مرنة بضغط معتدل دون كتم الدورة الدموية.","ارفع القدم فوق مستوى القلب أثناء الجلوس."],av:["الاستمرار في اللعب","الحرارة والتدليك القوي في البداية","الضمادة المشدودة جداً"],sk:["عدم القدرة على الدوس على القدم 4 خطوات","ألم شديد عند عظم الكاحل أو القدم","تشوّه واضح أو تنميل أو برودة/ازرقاق الأصابع","عدم التحسن خلال أيام قليلة"]},
+{id:"strain",e:"💪",n:"الشد العضلي",k:/شد عضل|شد|تمزق|عضلة|فخذ|سمانة|هامسترنغ/,sg:["ألم حاد مفاجئ أثناء الحركة","ضعف أو تيبّس في العضلة","أحياناً تورم أو كدمة"],st:["أوقف الحركة فوراً وأرح العضلة في وضع مريح.","ضع كمادة باردة ملفوفة 15–20 دقيقة.","ضمادة مرنة خفيفة وارفع الطرف إن أمكن.","عند زوال الألم الحاد، ابدأ بحركات لطيفة دون ألم."],av:["التمدد العنيف على العضلة المصابة","الجري أو اللعب رغم الألم","التدليك العميق في الأيام الأولى"],sk:["سماع أو الإحساس بـ«فرقعة» مع ضعف شديد","كتلة أو فجوة ظاهرة في العضلة","عدم القدرة على تحريك الطرف","ألم يزداد أو لا يتحسن خلال أيام"]},
+{id:"cramp",e:"⚡",n:"التشنجات العضلية",k:/تشنج|شنج|تقلص|مشدود/,sg:["انقباض مؤلم ومفاجئ في العضلة","عضلة صلبة ومشدودة","غالباً بعد جهد طويل أو تعرّق شديد"],st:["توقف عن الحركة وتمدد برفق في اتجاه معاكس للانقباض.","تنفس بهدوء وانتظر حتى يزول التشنج.","اشرب الماء أو مشروباً يحتوي أملاحاً إذا كنت واعياً بالكامل.","دلّك العضلة برفق بعد زوال التشنج."],av:["العودة للجهد الشديد فوراً","المشروبات المنبهة بكثرة"],sk:["تشنجات متكررة جداً أو شديدة","ضعف أو تورم أو احمرار الساق","ترافقها علامات إجهاد حراري (دوار، غثيان، تشوش)"]},
+{id:"knee",e:"🦵",n:"إصابات الركبة",k:/ركب/,sg:["ألم أو تورم حول الركبة","إحساس بعدم الثبات أو الانهيار","صعوبة في ثني الركبة أو فردها"],st:["أوقف النشاط ولا تحمّل الوزن إذا كان مؤلماً.","ضع كمادة باردة ملفوفة 15–20 دقيقة.","ارفع الساق وضع ضمادة مرنة بلا شدّ زائد.","استعن بعكاز أو مساعدة عند التنقّل."],av:["محاولة «فرد» ركبة عالقة بالقوة","اللعب أو الجري رغم الألم","الحرارة في البداية"],sk:["عدم القدرة على تحميل الوزن","ركبة مقفلة أو تشوّه ظاهر","تورم سريع بعد صوت فرقعة","تنميل أو برودة أو ازرقاق أسفل الركبة"]},
+{id:"shoulder",e:"🏋️",n:"إصابات الكتف",k:/كتف|خلع|ترقوة/,sg:["ألم عند رفع الذراع","تغيّر شكل الكتف أو بروز غير طبيعي","ضعف أو تنميل في الذراع"],st:["أبقِ الذراع قريبة من الجسم في الوضع الأكثر راحة.","استخدم وشاحاً أو قطعة قماش لدعم الذراع.","ضع كمادة باردة ملفوفة 15–20 دقيقة.","انقل المصاب لتقييم طبي."],av:["محاولة إعادة الكتف المخلوع بنفسك","تحريك الذراع بقوة","رفع أثقال أو متابعة اللعب"],sk:["تشوّه واضح أو كتف يبدو مخلوعاً","تنميل أو برودة أو تغيّر لون اليد","عدم القدرة على تحريك الذراع","ألم شديد بعد سقوط أو اصطدام"]},
+{id:"back",e:"🧍",n:"إصابات الظهر",k:/ظهر|عمود|فقرات|رقبة|عنق|قطنية/,sg:["ألم أو تشنج في الظهر","صعوبة الانحناء أو الحركة","ألم ينتشر إلى الساق"],st:["توقف عن النشاط واستلقِ أو اجلس في وضع مريح.","لا تحرّك المصاب إن اشتبهت بإصابة في الرقبة أو العمود بعد سقوط أو اصطدام قوي، واتصل بالإسعاف.","ضع كمادة باردة ملفوفة للألم الحاد الحديث.","ابدأ بحركات خفيفة فقط عندما يسمح الألم."],av:["الانحناء أو حمل الأثقال","تحريك رقبة أو ظهر مصاب بعد حادث قوي","التمدد العنيف"],sk:["تنميل أو ضعف في الساقين أو الذراعين","فقدان التحكم بالبول أو البراز","ألم شديد بعد سقوط أو ضربة قوية","ألم مع حمّى أو لا يهدأ بالراحة"],urgent:"عند الاشتباه بإصابة رقبة أو عمود فقري: لا تحرّك المصاب واتصل بالإسعاف."},
+{id:"wound",e:"🩹",n:"الجروح والنزيف",k:/جرح|نزيف|ينزف|دم|قطع|سحجة/,sg:["نزيف أو جلد ممزق","ألم وتورم حول الجرح","احتمال دخول أتربة أو أجسام غريبة"],st:["اضغط مباشرة على الجرح بقماش نظيف أو شاش دون رفعه باستمرار.","إذا تشبّع القماش أضف طبقة أخرى فوقه ولا تنزعه.","ارفع الجزء المصاب إن أمكن مع استمرار الضغط.","في الجروح الصغيرة فقط: اغسل بالماء الجاري ثم غطِّ بضماد نظيف."],av:["نزع القماش المتشبّع بالدم","إزالة جسم غارز في الجرح","وضع مواد غير معقمة على الجرح"],sk:["نزيف غزير أو نابض أو لا يتوقف بعد 10 دقائق من الضغط","جرح عميق أو واسع أو في الوجه/البطن/الصدر","جسم غارز أو أتربة لا تُزال بسهولة","علامات التهاب لاحقاً (حرارة، صديد، احمرار ينتشر)"],urgent:"نزيف شديد لا يتوقف: اتصل بالإسعاف فوراً واستمر في الضغط."},
+{id:"fall",e:"🤕",n:"السقوط والصدمات",k:/سقط|سقوط|صدمة|اصطدام|اصطدمت|وقع|وقوع/,sg:["ألم في مكان الارتطام","كدمات أو جروح","دوخة أو ألم في عدة أماكن"],st:["لا تحرّك المصاب فوراً إن اشتبهت بإصابة رقبة أو ظهر أو رأس.","تحقق من الوعي والتنفس والنزيف أولاً.","تعامل مع أي نزيف بالضغط المباشر.","أبقِ المصاب دافئاً وهادئاً وراقبه حتى تقييمه طبياً."],av:["إنهاض المصاب بسرعة","متابعة اللعب بعد اصطدام قوي","تركه وحيداً"],sk:["فقدان وعي ولو لحظات","ألم في الرقبة أو الظهر أو الصدر أو البطن","ضيق تنفس أو قيء متكرر","سقوط من ارتفاع أو اصطدام عالي السرعة"],urgent:"عند فقدان الوعي أو صعوبة التنفس أو الاشتباه بإصابة رقبة: اتصل بالإسعاف فوراً."},
+{id:"head",e:"🧠",n:"ضربة الرأس",k:/رأس|راس|دماغ|ارتجاج|دوخة|دوار|صداع/,sg:["صداع أو دوخة","ارتباك أو نسيان ما حدث","غثيان أو حساسية للضوء"],st:["أوقف اللاعب عن اللعب فوراً ولا يعد في اليوم نفسه.","أبقِه مرتاحاً ولا تتركه وحده، وراقب وعيه وكلامه.","ضع كمادة باردة على التورم الخارجي.","رتّب تقييماً طبياً حتى لو بدت الأعراض خفيفة."],av:["العودة للمباراة أو التدريب","النوم دون مراقبة في الساعات الأولى بلا تقييم طبي","الأدوية المسكّنة القوية دون استشارة"],sk:["فقدان وعي أو نعاس شديد أو صعوبة الإيقاظ","قيء متكرر أو صداع يزداد","تشوّش أو كلام غير واضح أو نوبات","سائل أو دم من الأنف أو الأذن، أو اختلاف حجم الحدقتين"],urgent:"أي علامة خطر بعد ضربة الرأس: اتصل بالإسعاف فوراً."},
+{id:"heat",e:"🌡️",n:"الإجهاد الحراري وضربة الشمس",k:/حر|شمس|إجهاد حراري|اجهاد|ارتفاع حرارة|إغماء|اغماء|جفاف/,sg:["تعرّق شديد وإرهاق ودوار","غثيان وصداع وتشنجات","في ضربة الشمس: حرارة عالية وتشوّش وجلد حار"],st:["انقل المصاب فوراً إلى مكان مظلل أو بارد وأوقف النشاط.","أزل الملابس الزائدة وبرّد الجسم بالماء البارد والكمادات (الرقبة، الإبط، الفخذ).","إذا كان واعياً تماماً، أعطِه ماء على رشفات.","إذا ظهر تشوّش أو إغماء أو حرارة شديدة: اتصل بالإسعاف واستمر في التبريد."],av:["إعطاء السوائل لفاقد الوعي","الاكتفاء بالانتظار دون تبريد","إعادة اللاعب للنشاط"],sk:["تشوّش أو إغماء أو تشنجات","حرارة شديدة أو جلد حار وجاف","قيء متكرر أو عدم تحسن خلال 30 دقيقة من التبريد"],urgent:"التشوّش أو الإغماء مع الحرارة = ضربة شمس محتملة. اتصل بالإسعاف فوراً وواصل التبريد."},
+{id:"fracture",e:"🦴",n:"الكسور المحتملة",k:/كسر|كسور|عظم|عظمة|مكسور/,sg:["ألم شديد وتورم","تشوّه أو وضع غير طبيعي للطرف","عدم القدرة على الحركة أو تحميل الوزن"],st:["لا تحرّك الطرف وثبّته كما هو بدعم لطيف (وسادة أو قماش).","ضع كمادة باردة ملفوفة حول المنطقة دون ضغط.","إن كان هناك جرح مفتوح غطِّه بقماش نظيف وأوقف النزيف بضغط حول الجرح.","اطلب المساعدة الطبية لنقل المصاب."],av:["محاولة إعادة العظم إلى مكانه","تحريك الطرف أو اختبار الحركة","إعطاء طعام أو شراب إن احتمل التدخل الجراحي"],sk:["عظم ظاهر أو جرح مفتوح","تنميل أو برودة أو ازرقاق الطرف","ألم شديد جداً أو تشوّه ظاهر","اشتباه كسر في الحوض أو الفخذ أو الرقبة أو الظهر"],urgent:"كسر مكشوف أو تنميل أو برودة الطرف: اتصل بالإسعاف فوراً."}
+];
+const ZONES={head:["head"],shoulder:["shoulder","fracture"],torso:["back","fall"],arm:["bruise","fracture","strain"],thigh:["strain","cramp"],knee:["knee"],calf:["cramp","strain"],ankle:["ankle"]};
+const ZN={head:"الرأس",shoulder:"الكتف",torso:"الجذع/الظهر",arm:"الذراع",thigh:"الفخذ",knee:"الركبة",calf:"الساق",ankle:"الكاحل"};
+const EMG=/فقد.*وع|فاقد.*وع|أغمي|اغمي|لا يتنفس|صعوبة.*تنفس|ضيق.*تنفس|نزيف شديد|ينزف بشدة|ألم.*صدر|الم.*صدر|ألم في القلب|تشنجات شديدة|لا يستجيب/;
+const WARN="هذا المحتوى للإرشاد العام فقط ولا يغني عن الطبيب أو المسعف. في أي حالة خطيرة اتصل بالإسعاف أولاً.";
+let mem={};const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return k in mem?mem[k]:d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){mem[k]=v}}};
+const FIRST=!store.get("mode",null);let MODE=store.get("mode",null)||"classic";let chat=[],pending=null,zone=null,draftPhoto=null;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const inj=id=>INJ.find(i=>i.id===id);
+const num=()=>store.get("sos",{n:"14",ok:false});
+const callBtn=(c="")=>`<a class="btn red ${c}" href="tel:${esc(num().n)}">📞 اتصل بالإسعاف ${esc(num().n)}</a>`;
+function go(h){location.hash=h}
+const NAV=[["home","🏠","الرئيسية"],["start","▶️","ابدأ"],["massage","💆","تدليك"],["photo","📷","تصوير"],["sos","🚨","طوارئ"],["log","📋","السجل"]];
+function route(){
+ const h=(location.hash||(MODE==="chat"?"#aid":"#home")).slice(1),[p,arg]=h.split("/");
+ $("#nav").innerHTML=NAV.map(([k,i,t])=>`<button class="${k===p||(k==='aid'&&['body','injury','photo'].includes(p))?'on':''} ${k==='sos'?'sos':''}" onclick="go('${k}')"><span>${i}</span>${t}</button>`).join("");
+ $("#back").hidden=p===(MODE==="chat"?"aid":"home");$("#drawer").classList.remove("open");
+ const v={home,aid,sos,log,body,injury,photo,start,massage}[p]||home;v(arg);
+ $("#main").style.paddingBottom=p==="aid"?"6px":"";
+}
+$("#back").onclick=()=>history.length>1?history.back():go("home");
+addEventListener("hashchange",route);
+function home(){
+ $("#main").innerHTML=`<div class="hero"><h2>🚨 حالة طارئة؟</h2><p style="margin:0 0 10px">فقدان وعي، صعوبة تنفس، نزيف شديد، ألم صدر أو إصابة رأس خطيرة؟ لا تنتظر.</p><div class="row">${callBtn("big")}<button class="btn ghost big" onclick="go('sos')">إرشادات الطوارئ</button></div></div>
+ <button class="btn big" style="margin-bottom:12px" onclick="W=newW();go('start')">▶️ ابدأ الإسعاف خطوة بخطوة</button>
+ <div class="grid" style="margin-bottom:12px">
+ <div class="tile" onclick="M={s:1,a:''};go('massage')"><i>💆</i>التدليك</div>
+ <div class="tile" onclick="go('body')"><i>🧍</i>حدّد مكان الإصابة</div>
+ <div class="tile" onclick="go('photo')"><i>📷</i>صوّر الإصابة</div></div>
+ <h3>أنواع الإصابات</h3><div class="grid">${INJ.map(i=>`<div class="tile" onclick="go('injury/${i.id}')"><i>${i.e}</i>${i.n}</div>`).join("")}</div>
+ <div class="grid" style="margin-top:12px"><div class="tile" onclick="go('log')"><i>📋</i>سجل الإصابات</div><div class="tile" onclick="go('sos')"><i>🆘</i>زر الطوارئ</div><div class="tile" onclick="expert('عام')"><i>👨‍⚕️</i>طلب مختص</div></div>
+ <p style="color:var(--mute);font-size:13px;margin-top:14px">${WARN} المحتوى تجريبي ويجب مراجعته من مختص مؤهل قبل الإطلاق.</p>`;
+}
+function injury(id){
+ const i=inj(id);if(!i)return go("home");
+ const ul=a=>"<ul>"+a.map(x=>`<li>${x}</li>`).join("")+"</ul>";
+ $("#main").innerHTML=`<div class="card" style="text-align:center"><div style="font-size:64px;line-height:1.1">${i.e}</div><h2 style="margin:4px 0">${i.n}</h2><span class="tag">دليل مصوّر</span></div>
+ ${i.urgent?`<div class="hero"><b>⚠️ ${i.urgent}</b><div style="margin-top:8px">${callBtn()}</div></div>`:""}
+ <div class="card"><div class="sec"><h4>علامات الإصابة المحتملة</h4>${ul(i.sg)}</div>
+ <div class="sec"><h4>ما يجب فعله فوراً (بالترتيب)</h4><ol>${i.st.map(x=>`<li>${x}</li>`).join("")}</ol></div>
+ <div class="sec no"><h4>ما يجب تجنّبه</h4>${ul(i.av)}</div>
+ <div class="sec ask"><h4>متى تطلب المساعدة الطبية؟</h4>${ul(i.sk)}</div></div>
+ <div class="row"><button class="btn ghost" onclick="video('${i.n}')">▶ فيديو تعليمي</button><button class="btn ghost" onclick="expert('${i.n}')">👨‍⚕️ طلب استشارة مختص</button><button class="btn" onclick="go('log/new-${i.id}')">📋 حفظ في السجل</button>${["bruise","ankle","strain","cramp","knee","back"].includes(i.id)?`<button class="btn ghost" onclick="M={s:1,a:''};go('massage')">💆 التدليك (بعد التعافي الحاد)</button>`:""}</div>${["bruise","ankle","strain","knee","back"].includes(i.id)?`<div class="note" style="margin-top:10px">لا تدلّك الإصابة الحديثة أو المتورمة أو المؤلمة. التدليك للتعب والشدّ فقط، وبعد تقييم مختص إذا كانت الإصابة حقيقية.</div>`:""}
+ <p style="color:var(--mute);font-size:13px">${WARN}</p>`;
+}
+function modal(html){const m=document.createElement("div");m.className="modal";m.innerHTML=`<div class="card">${html}<button class="btn ghost" style="margin-top:8px;width:100%" id="mc">إغلاق</button></div>`;m.onclick=e=>{if(e.target===m||e.target.id==="mc")m.remove()};document.body.append(m)}
+window.video=n=>modal(`<div class="vid">▶</div><h3>فيديو: ${esc(n)}</h3><p>الفيديو غير متوفر في هذا النموذج التجريبي. يجب تصوير أو اعتماد مقاطع تعليمية من مختص مؤهل قبل الإطلاق.</p>`);
+window.expert=n=>modal(`<h3>طلب استشارة مختص</h3><p>الإصابة: ${esc(n)}</p><label>رقم أو بريد للتواصل</label><input type="text" id="ec"><label>رسالتك</label><textarea class="f" id="em" rows="3"></textarea><button class="btn" style="margin-top:8px;width:100%" onclick="document.querySelector('.modal').remove();toast('تم تسجيل الطلب (تجريبي)')">إرسال الطلب</button><p style="font-size:13px;color:var(--mute)">في الحالات العاجلة لا تنتظر الرد، اتصل بالإسعاف.</p>`);
+window.toast=t=>modal(`<p style="margin:0">${esc(t)}</p>`);
+/* chat */
+function bot(html,alert){chat.push({r:"a",h:html,alert})}
+function aid(){
+ if(!chat.length)bot(`<div class="welcome"><h2>كيف أساعدك؟</h2></div>مرحباً 👋 أنا مساعد RECV SPORT للإسعافات الأولية. صِف الإصابة أو اختر نوعها أو أرفق صورة.<br><small>أقدّم إرشادات عامة فقط ولا أؤكد تشخيصاً.</small><div class="chips">${INJ.map(i=>`<span class="chip" onclick="ask('${i.n}')">${i.e} ${i.n}</span>`).join("")}<span class="chip" onclick="W=newW();go('start')">▶️ خطوات الإسعاف</span><span class="chip" onclick="M={s:1,a:''};go('massage')">💆 التدليك</span></div>`);
+ $("#main").innerHTML=`<div class="chat"><div class="row" style="margin-bottom:8px"><button class="btn ghost" onclick="go('body')">🧍 مكان الإصابة</button><button class="btn red" onclick="go('sos')">🚨 طوارئ</button></div><div class="msgs" id="msgs"></div>
+ <div id="pend"></div><div class="composer"><button class="ib" aria-label="إرفاق صورة" onclick="$('#file').click()">📷</button><textarea id="q" rows="1" placeholder="صِف الأعراض ووقت حدوث الإصابة..."></textarea><button class="ib send" aria-label="إرسال" onclick="send()">➤</button></div></div>`;
+ drawChat();$("#q").onkeydown=e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();send()}};
+ if(zone){$("#q").value=`ألم في ${ZN[zone]}`;}
+}
+function drawChat(){const m=$("#msgs");if(!m)return;m.innerHTML=chat.map(c=>`<div class="m ${c.r} ${c.alert?'alert':''}">${c.h}</div>`).join("");m.scrollTop=m.scrollHeight;$("#pend").innerHTML=pending?`<div class="m u" style="margin-bottom:6px"><img src="${pending}" alt="" style="max-width:90px"> صورة جاهزة <a href="#" onclick="pending=null;drawChat();return false" style="color:inherit">إزالة</a></div>`:""}
+window.ask=t=>{$("#q").value=t;send()};
+window.send=()=>{
+ const q=$("#q"),t=q.value.trim();if(!t&&!pending)return;
+ chat.push({r:"u",h:(pending?`<img src="${pending}" alt="صورة الإصابة">`:"")+esc(t)});
+ const img=!!pending;pending=null;q.value="";
+ if(EMG.test(t)){bot(`<b>⚠️ علامة خطر محتملة. اتصل بالإسعاف الآن</b> ولا تنتظر أي إرشاد رقمي.<div style="margin-top:8px">${callBtn()}</div><p>إلى أن يصل الإسعاف: ابقَ مع المصاب، راقب تنفسه ووعيه، واضغط على أي نزيف بقماش نظيف.</p>`,true)}
+ else{
+  const f=INJ.find(i=>i.k.test(t))||(zone&&ZONES[zone]&&inj(ZONES[zone][0]));
+  if(/تدليك|مساج|دلك/.test(t)){bot(`التدليك مناسب لشدّ العضلات والتعب بعد الجهد، وليس للإصابة الحادة أو الحديثة. ابدأ بفحص الأمان ثم اختر المنطقة.<div class="chips"><span class="chip" onclick="startMassage()">💆 دليل التدليك</span></div>`)}else if(f){bot(`يبدو أن وصفك يتعلق بـ <b>${f.e} ${f.n}</b> (هذا ليس تشخيصاً).${f.urgent?`<p><b>⚠️ ${f.urgent}</b></p>`:""}<p><b>أهم خطوات الآن:</b></p><ol>${f.st.slice(0,3).map(x=>`<li>${x}</li>`).join("")}</ol><div class="chips"><span class="chip" onclick="go('injury/${f.id}')">📖 الدليل الكامل</span><span class="chip" onclick="go('log/new-${f.id}')">📋 حفظ في السجل</span><span class="chip" onclick="expert('${f.n}')">👨‍⚕️ مختص</span></div>`)}
+  else if(img||t){bot(`لم أستطع تحديد نوع الإصابة. أخبرني: أين الألم؟ متى حدثت؟ هل هناك تورم أو نزيف أو تنميل؟ أو اختر من الأنواع:<div class="chips">${INJ.map(i=>`<span class="chip" onclick="ask('${i.n}')">${i.e} ${i.n}</span>`).join("")}</div>`)}
+  if(img)bot(`<b>ملاحظات بصرية عامة:</b> لا أستطيع تأكيد التشخيص من الصورة. تحقق بنفسك من: تورم واضح، تغيّر اللون، تشوّه في الشكل، جرح مفتوح أو نزيف، وعدم تناظر مع الجهة الأخرى. إذا وُجد تشوّه أو جرح عميق أو تنميل، اطلب المساعدة الطبية.`)
+ }
+ drawChat();
+};
+$("#file").onchange=e=>{const f=e.target.files[0];e.target.value="";if(!f)return;const r=new FileReader();r.onload=()=>{thumb(r.result,d=>{const p=(location.hash||(MODE==="chat"?"#aid":"#home")).slice(1).split("/")[0];if(p==="aid"){pending=d;drawChat()}else if(p==="start"){saveW();W.photo=d;route()}else if(p==="photo"||p==="log"){draftPhoto=d;route()}else{pending=d;go("aid")}})};r.readAsDataURL(f)};
+function thumb(src,cb){const im=new Image();im.onload=()=>{const s=Math.min(1,640/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=im.width*s;c.height=im.height*s;c.getContext("2d").drawImage(im,0,0,c.width,c.height);cb(c.toDataURL("image/jpeg",.7))};im.onerror=()=>cb(src);im.src=src}
+/* body map */
+function body(){
+ const Z=(k,sv)=>sv.replace("<",`<`).replace("/>",` class="z ${zone===k?'on':''}" data-z="${k}" tabindex="0" role="button" aria-label="${ZN[k]}"/>`);
+ $("#main").innerHTML=`<div class="card"><h3>حدّد مكان الإصابة</h3><p style="margin:0;color:var(--mute)">المس المنطقة المصابة على الجسم.</p>
+ <svg class="body-map" viewBox="0 0 200 420">${[["head",'<circle cx="100" cy="30" r="24"/>'],["shoulder",'<rect x="50" y="60" width="100" height="26" rx="13"/>'],["torso",'<rect x="62" y="90" width="76" height="100" rx="14"/>'],["arm",'<rect x="30" y="90" width="26" height="110" rx="12"/><rect x="144" y="90" width="26" height="110" rx="12"/>'],["thigh",'<rect x="64" y="194" width="34" height="90" rx="14"/><rect x="102" y="194" width="34" height="90" rx="14"/>'],["knee",'<rect x="64" y="286" width="34" height="26" rx="12"/><rect x="102" y="286" width="34" height="26" rx="12"/>'],["calf",'<rect x="66" y="314" width="30" height="64" rx="12"/><rect x="104" y="314" width="30" height="64" rx="12"/>'],["ankle",'<rect x="62" y="380" width="38" height="26" rx="12"/><rect x="100" y="380" width="38" height="26" rx="12"/>']].map(([k,s])=>`<g data-z="${k}" class="zg">${s.replace(/\/>/g,`class="z ${zone===k?'on':''}"/>`)}</g>`).join("")}</svg></div>
+ <div id="zres"></div>`;
+ document.querySelectorAll(".zg").forEach(g=>{const f=()=>{zone=g.dataset.z;body()};g.onclick=f;g.setAttribute("tabindex","0");g.setAttribute("role","button");g.setAttribute("aria-label",ZN[g.dataset.z]);g.onkeydown=e=>{if(e.key==="Enter"||e.key===" ")f()}});
+ if(zone)$("#zres").innerHTML=`<div class="card"><h3>المنطقة: ${ZN[zone]}</h3><p>إصابات محتملة في هذه المنطقة (للاختيار وليس تشخيصاً):</p><div class="row">${ZONES[zone].map(id=>`<button class="btn ghost" onclick="go('injury/${id}')">${inj(id).e} ${inj(id).n}</button>`).join("")}</div><div class="row" style="margin-top:10px"><button class="btn" onclick="go('photo')">📷 صوّر المنطقة وصِف الأعراض</button></div></div>`;
+}
+/* photo / smart capture */
+function photo(){
+ const now=new Date(),d=now.toISOString().slice(0,10),t=now.toTimeString().slice(0,5);
+ $("#main").innerHTML=`<div class="note">التصوير الذكي يعطي ملاحظات بصرية عامة فقط، ولا يؤكد تشخيصاً.</div>
+ <div class="card"><div class="row"><button class="btn" onclick="$('#file').setAttribute('capture','environment');$('#file').click()">📷 التقاط صورة</button><button class="btn ghost" onclick="$('#file').removeAttribute('capture');$('#file').click()">🖼️ رفع من الهاتف</button></div>
+ ${draftPhoto?`<img src="${draftPhoto}" alt="صورة الإصابة" style="width:100%;border-radius:12px;margin-top:10px">`:""}
+ <label>مكان الإصابة</label><select id="pz"><option value="">اختر...</option>${Object.keys(ZN).map(k=>`<option value="${k}" ${zone===k?"selected":""}>${ZN[k]}</option>`).join("")}</select>
+ <div class="row"><div style="flex:1"><label>تاريخ الحدوث</label><input type="date" id="pd" value="${d}"></div><div style="flex:1"><label>الوقت</label><input type="time" id="pt" value="${t}"></div></div>
+ <label>الأعراض</label><textarea class="f" id="ps" rows="3" placeholder="مثال: ألم عند الدوس، تورم، تنميل..."></textarea>
+ <button class="btn big" style="margin-top:12px" onclick="analyze()">عرض الملاحظات الأولية</button></div><div id="pres"></div>`;
+}
+window.analyze=()=>{
+ const z=$("#pz").value,s=$("#ps").value.trim();if(z)zone=z;
+ if(EMG.test(s)){$("#pres").innerHTML=`<div class="hero"><h2>⚠️ علامة خطر</h2><p>اتصل بالإسعاف الآن.</p>${callBtn("big")}</div>`;return}
+ const f=INJ.find(i=>i.k.test(s))||(z&&inj(ZONES[z][0]));
+ $("#pres").innerHTML=`<div class="card"><h3>ملاحظات أولية</h3>${draftPhoto?"":"<p style='color:var(--mute)'>لم تُرفق صورة. يمكنك المتابعة بالوصف فقط.</p>"}<p>لا يمكن تأكيد التشخيص من الصورة. افحص بنفسك: التورم، تغيّر اللون، التشوّه، الجرح المفتوح، ومقارنة الجهة السليمة.</p>${f?`<p>إرشاد عام مرتبط بـ <b>${f.n}</b>:</p><ol>${f.st.slice(0,3).map(x=>`<li>${x}</li>`).join("")}</ol>`:"<p>أضف مكان الإصابة أو الأعراض لعرض إرشاد أدق.</p>"}
+ <div class="row">${f?`<button class="btn ghost" onclick="go('injury/${f.id}')">📖 الدليل الكامل</button>`:""}<button class="btn" onclick="saveFromPhoto('${f?f.id:""}')">📋 حفظ في السجل</button></div></div>`;
+};
+window.saveFromPhoto=id=>{const e={id:Date.now(),inj:id||"other",zone:$("#pz").value,date:$("#pd").value,time:$("#pt").value,sym:$("#ps").value,photo:draftPhoto,ups:[]};const L=store.get("log",[]);L.unshift(e);store.set("log",L);draftPhoto=null;go("log")};
+/* emergency */
+function sos(){
+ const s=num();
+ $("#main").innerHTML=`<div class="hero"><h2>🚨 زر الطوارئ</h2>${callBtn("big")}<p style="margin:8px 0 0;font-size:14px">الاتصال لا ينتظر أي خطوة رقمية. تأكد من الرقم مرة واحدة أدناه.</p></div>
+ <div class="card"><h3>اتصل فوراً إذا وُجد:</h3><ul><li>فقدان الوعي أو عدم الاستجابة</li><li>صعوبة في التنفس أو توقفه</li><li>نزيف شديد لا يتوقف</li><li>ألم في الصدر</li><li>إصابة رأس أو رقبة أو ظهر خطيرة</li><li>تشنجات، أو حرارة عالية مع تشوّش</li><li>كسر مكشوف أو تشوّه شديد</li></ul></div>
+ <div class="card"><h3>أثناء طلب المساعدة</h3><ol><li>ابقَ هادئاً وأبقِ الهاتف على مكبّر الصوت.</li><li>أخبرهم بالمكان الدقيق، وماذا حدث، وعدد المصابين.</li><li>لا تقطع المكالمة قبل أن يسمح لك المسعف.</li><li>ابقَ مع المصاب وراقب وعيه وتنفسه.</li><li>اضغط على أي نزيف بقماش نظيف، ولا تحرّك من تشتبه بإصابة رقبة أو ظهر.</li></ol></div>
+ <div class="card"><h3>معلومات الحالة للمسعف</h3><label>اسم الرياضي</label><input type="text" id="n1" value="${esc(s.name||"")}"><label>العمر / الحالة الصحية أو الحساسية</label><input type="text" id="n2" value="${esc(s.med||"")}"><label>جهة اتصال طوارئ</label><input type="tel" id="n3" value="${esc(s.c||"")}">
+ <label>رقم الإسعاف المحلي</label><input type="tel" id="n4" value="${esc(s.n)}"><label style="font-weight:400"><input type="checkbox" id="n5" ${s.ok?"checked":""}> تحققت من أن هذا هو رقم الإسعاف الصحيح في بلدي</label>
+ <div class="row" style="margin-top:10px"><button class="btn" onclick="saveSos()">حفظ</button><button class="btn ghost" onclick="showInfo()">عرض المعلومات للمسعف</button></div></div>`;
+}
+window.saveSos=()=>{store.set("sos",{name:$("#n1").value,med:$("#n2").value,c:$("#n3").value,n:$("#n4").value||"14",ok:$("#n5").checked});sos()};
+window.showInfo=()=>{const s=store.get("sos",{});modal(`<h3>معلومات للمسعف</h3><p>الاسم: ${esc(s.name||"—")}<br>الحالة/الحساسية: ${esc(s.med||"—")}<br>جهة الطوارئ: ${esc(s.c||"—")}</p>`)};
+/* log */
+function log(arg){
+ if(arg&&arg.startsWith("new-"))return logForm(arg.slice(4));
+ const L=store.get("log",[]);
+ $("#main").innerHTML=`<div class="row" style="margin-bottom:12px"><button class="btn" onclick="go('log/new-')">+ إصابة جديدة</button>${L.length?`<button class="btn ghost" onclick="share()">مشاركة مع مختص</button>`:""}</div>
+ ${L.length?L.map(e=>`<div class="card"><div class="row" style="flex-wrap:nowrap">${e.photo?`<img class="thumb" src="${e.photo}" alt="">`:""}<div style="flex:1"><h3>${(inj(e.inj)||{e:"🩺",n:"إصابة أخرى"}).e} ${(inj(e.inj)||{n:"إصابة أخرى"}).n} ${e.zone?`<span class="tag">${ZN[e.zone]}</span>`:""}</h3><small style="color:var(--mute)">${esc(e.date||"")} ${esc(e.time||"")}</small><p style="margin:2px 0">${esc(e.sym||"")}</p></div></div>
+ ${e.ups.map(u=>`<div style="font-size:14px;border-top:1px dashed var(--line);padding:4px 0">${esc(u.d)} — ألم ${u.p}/10 ${esc(u.n)}</div>`).join("")}
+ <div class="row" style="margin-top:8px"><button class="btn ghost" onclick="addUp(${e.id})">+ تحديث الأعراض</button><button class="btn ghost" onclick="del(${e.id})">حذف</button></div></div>`).join(""):`<div class="card" style="text-align:center"><div style="font-size:48px">📋</div><p>لا توجد إصابات محفوظة. أضف أول إصابة لمتابعة تطورها.</p></div>`}`;
+}
+function logForm(pre){
+ const d=new Date();
+ $("#main").innerHTML=`<div class="card"><h3>حفظ إصابة</h3><label>نوع الإصابة</label><select id="li">${INJ.map(i=>`<option value="${i.id}" ${i.id===pre?"selected":""}>${i.n}</option>`).join("")}<option value="other">أخرى</option></select>
+ <label>المكان</label><select id="lz"><option value="">—</option>${Object.keys(ZN).map(k=>`<option value="${k}" ${zone===k?"selected":""}>${ZN[k]}</option>`).join("")}</select>
+ <div class="row"><div style="flex:1"><label>التاريخ</label><input type="date" id="ld" value="${d.toISOString().slice(0,10)}"></div><div style="flex:1"><label>الوقت</label><input type="time" id="lt" value="${d.toTimeString().slice(0,5)}"></div></div>
+ <label>الأعراض</label><textarea class="f" id="ls" rows="3"></textarea>
+ <div style="margin-top:8px"><button class="btn ghost" onclick="$('#file').removeAttribute('capture');$('#file').click()">🖼️ إضافة صورة</button> ${draftPhoto?`<img class="thumb" src="${draftPhoto}" alt="" style="vertical-align:middle">`:""}</div>
+ <button class="btn big" style="margin-top:12px" onclick="saveLog()">حفظ</button></div>`;
+}
+window.saveLog=()=>{const L=store.get("log",[]);L.unshift({id:Date.now(),inj:$("#li").value,zone:$("#lz").value,date:$("#ld").value,time:$("#lt").value,sym:$("#ls").value,photo:draftPhoto,ups:[]});store.set("log",L);draftPhoto=null;go("log")};
+window.addUp=id=>{modal(`<h3>تحديث الأعراض</h3><label>شدة الألم الآن (0–10)</label><input type="number" id="up" min="0" max="10" value="3"><label>ملاحظة</label><input type="text" id="un"><button class="btn big" style="margin-top:10px" id="us">حفظ التحديث</button>`);$("#us").onclick=()=>{const L=store.get("log",[]),e=L.find(x=>x.id===id);e.ups.push({d:new Date().toISOString().slice(0,10),p:$("#up").value,n:$("#un").value});store.set("log",L);document.querySelector(".modal").remove();log()}};
+window.del=id=>{store.set("log",store.get("log",[]).filter(x=>x.id!==id));log()};
+window.share=()=>{modal(`<h3>مشاركة السجل</h3><p>سيُشارَك نص السجل (دون الصور) مع من تختاره فقط.</p><label style="font-weight:400"><input type="checkbox" id="cs"> أوافق على مشاركة سجل إصاباتي مع مختص</label><button class="btn big" style="margin-top:10px" id="sb">مشاركة</button>`);$("#sb").onclick=async()=>{if(!$("#cs").checked){alert("يجب الموافقة أولاً");return}const txt=store.get("log",[]).map(e=>`${(inj(e.inj)||{n:"أخرى"}).n} | ${e.date} ${e.time} | ${e.sym}`+e.ups.map(u=>`\n  ${u.d}: ألم ${u.p}/10 ${u.n}`).join("")).join("\n\n");try{if(navigator.share)await navigator.share({title:"سجل إصابات RECV SPORT",text:txt});else{await navigator.clipboard.writeText(txt);alert("تم نسخ السجل")}}catch(e){}document.querySelector(".modal")?.remove()}};/* massage */
+const MA={
+calf:{n:"الساق (السمانة)",e:"🦶",m:6,st:["ضع القليل من الزيت أو الكريم ودفّئ يديك.","امسح بكفّك ببطء من الكاحل نحو الركبة بضغط خفيف لمدة دقيقة.","اعجن العضلة برفق بالإبهام وأطراف الأصابع بضغط متوسط 2–3 دقائق، وتجنّب خلف الركبة.","اختم بمسحات خفيفة بطيئة لدقيقة، ثم حرّك الكاحل برفق."]},
+quad:{n:"الفخذ الأمامي",e:"🦵",m:6,st:["اجلس مع ساق مفرودة ومسترخية.","امسح بكفّيك من الركبة نحو الورك بضغط خفيف لدقيقة.","اضغط وحرّك قبضتك أو كفّك على عضلة الفخذ بضغط متوسط 2–3 دقائق، ولا تضغط على الركبة نفسها.","اختم بمسحات خفيفة، ثم ثنِ الركبة وافردها برفق."]},
+ham:{n:"الفخذ الخلفي",e:"🦵",m:6,st:["استلقِ على بطنك أو اجلس بساق مفرودة.","امسح من خلف الركبة نحو الأرداف بضغط خفيف دقيقة، وتجنّب منطقة خلف الركبة مباشرة.","اعجن العضلة بضغط متوسط 2–3 دقائق.","اختم بمسحات خفيفة واسترخِ."]},
+shoulder:{n:"الكتف وأعلى الظهر",e:"🏋️",m:5,st:["اجلس مسترخياً وأنزل كتفيك.","ضع يدك على العضلة بين جانب الرقبة والكتف، واضغط برفق بحركات دائرية صغيرة 2 دقيقة.","اعجن العضلة برفق نحو الكتف، دون الضغط على عظام الرقبة أو الجهة الأمامية والجانبية من الرقبة.","اختم برفع الكتفين ثم إنزالهما ببطء 5 مرات."]},
+lback:{n:"أسفل الظهر",e:"🧍",m:5,st:["استلقِ على جانبك أو بطنك بوضع مريح (أو اطلب مساعدة).","استخدم كفّاً مفرودة على العضلات المجاورة للعمود الفقري، وليس على العظم، بضغط خفيف جداً.","امسح بحركات بطيئة من الأسفل نحو الأعلى 3 دقائق.","توقف إذا ظهر ألم حاد أو ينزل للساق."]},
+sole:{n:"باطن القدم",e:"👣",m:4,st:["اجلس وضع كرة صغيرة أو كرة تدليك تحت القدم.","دحرج القدم ببطء من الكعب إلى الأصابع بضغط خفيف إلى متوسط 2 دقيقة.","ركّز على النقاط المشدودة 10–15 ثانية دون ألم حاد.","بدّل القدم."]},
+fore:{n:"الساعد",e:"💪",m:3,st:["أسند الساعد على سطح مريح وراحة اليد للأعلى.","امسح بإبهامك من الرسغ نحو المرفق بضغط خفيف دقيقة.","اضغط وحرّك على عضلات الساعد بضغط متوسط دقيقتين، وتجنّب باطن الرسغ والمرفق."]}
+};
+const CI=["إصابة حديثة (أقل من 48 ساعة)","جرح مفتوح أو نزيف أو كدمة كبيرة","كسر محتمل أو تشوّه أو خلع","ألم أو تورم أو احمرار أو حرارة في الساق (خاصة السمانة) دون سبب واضح","حمّى أو التهاب أو مرض جلدي في المنطقة","ضربة رأس أو رقبة أو ظهر","تنميل أو ضعف أو فقدان إحساس","الألم يزداد أو حاد عند اللمس"];
+let M={s:1,a:""},TM=null,TL=0,TR=false;
+function tfmt(x){return String(Math.floor(x/60)).padStart(2,"0")+":"+String(x%60).padStart(2,"0")}
+window.chk2=()=>{const on=[...document.querySelectorAll(".mf")].some(x=>x.checked);$("#mres").innerHTML=on?`<div class="hero" style="margin-top:10px"><h2>لا تدلّك الآن</h2><p>التدليك قد يزيد الضرر في هذه الحالات. استخدم الراحة والكمادة الباردة واطلب تقييماً طبياً. إذا وُجدت علامة خطر اتصل بالإسعاف.</p><div class="row"><button class="btn red" onclick="go('start')">ابدأ الإسعاف خطوة بخطوة</button>${callBtn()}</div></div>`:"";$("#mgo").disabled=on;$("#mgo").style.opacity=on?.4:1};
+window.tick=()=>{if(!TR)return;TL--;const e=$("#tm");if(!e){clearInterval(TM);TR=false;return}e.textContent=tfmt(Math.max(TL,0));if(TL<=0){clearInterval(TM);TR=false;try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(x){}$("#tb").textContent="انتهى الوقت ✓"}};
+window.tmr=a=>{clearInterval(TM);if(a==="go"){if(TL<=0)TL=MA[M.a].m*60;TR=true;TM=setInterval(tick,1000);$("#tb").textContent="إيقاف مؤقت";$("#tb").onclick=()=>tmr("pause")}else if(a==="pause"){TR=false;$("#tb").textContent="متابعة";$("#tb").onclick=()=>tmr("go")}else{TR=false;TL=MA[M.a].m*60;$("#tm").textContent=tfmt(TL);$("#tb").textContent="ابدأ المؤقّت";$("#tb").onclick=()=>tmr("go")}};
+function massage(){
+ clearInterval(TM);TR=false;
+ const bar=`<div style="height:6px;background:var(--line);border-radius:9px;margin-bottom:6px"><div style="height:6px;width:${M.s*33.4}%;background:var(--brand);border-radius:9px"></div></div><small style="color:var(--mute)">التدليك – الخطوة ${M.s} من 3</small>`;
+ let h="";
+ if(M.s===1){h=bar+`<h2>💆 فحص الأمان قبل التدليك</h2><div class="note">التدليك مناسب لشدّ العضلات والتعب بعد الجهد، وليس علاجاً للإصابة الحادة. هل ينطبق عليك أي مما يلي؟</div>`+CI.map(f=>`<label style="font-weight:400;display:flex;gap:10px;align-items:center;padding:8px 12px;margin:6px 0" class="card"><input type="checkbox" class="mf" onchange="chk2()"> ${f}</label>`).join("")+`<div id="mres"></div><button class="btn big" id="mgo" style="margin-top:12px" onclick="M.s=2;route()">لا ينطبق أي منها — متابعة</button>`}
+ else if(M.s===2){h=bar+`<h2>أي منطقة تريد تدليكها؟</h2><div class="grid">${Object.keys(MA).map(k=>`<div class="tile" onclick="M.a='${k}';M.s=3;TL=0;route()"><i>${MA[k].e}</i>${MA[k].n}</div>`).join("")}</div><div class="row" style="margin-top:14px"><button class="btn ghost" onclick="M.s=1;route()">السابق</button></div>`}
+ else{const a=MA[M.a];if(TL<=0&&!TR)TL=a.m*60;h=bar+`<h2>${a.e} تدليك ${a.n}</h2><div class="card" style="text-align:center"><div id="tm" style="font-size:44px;font-weight:800">${tfmt(TL)}</div><button class="btn" id="tb" onclick="tmr('go')">ابدأ المؤقّت</button> <button class="btn ghost" onclick="tmr('reset')">إعادة</button><div style="color:var(--mute);font-size:13px;margin-top:4px">المدة المقترحة ${a.m} دقائق · الضغط من خفيف إلى متوسط (3–5 من 10)</div></div>
+ <div class="card"><div class="sec"><h4>الخطوات</h4><ol>${a.st.map(x=>`<li>${x}</li>`).join("")}</ol></div><div class="sec ask"><h4>قواعد عامة</h4><ul><li>تنفّس بعمق واسترخِ أثناء التدليك.</li><li>لا تضغط مباشرة على العظم أو المفصل.</li><li>اشرب الماء بعده.</li></ul></div><div class="sec no"><h4>توقف فوراً إذا</h4><ul><li>ظهر ألم حاد أو يزداد.</li><li>ظهر تنميل أو وخز أو دوخة.</li><li>ظهر تورم أو احمرار جديد.</li></ul></div></div><div class="row"><button class="btn ghost" onclick="M.s=2;route()">منطقة أخرى</button><button class="btn" onclick="expert('تدليك ${a.n}')">👨‍⚕️ مختص</button></div><p style="color:var(--mute);font-size:13px">${WARN} للإصابة الحقيقية استشر مختصاً قبل التدليك.</p>`}
+ $("#main").innerHTML=h;
+}
+/* guided steps */
+const newW=()=>({s:1,z:"",i:"",photo:null,d:new Date().toISOString().slice(0,10),t:new Date().toTimeString().slice(0,5),sym:"",st:0});
+let W=newW();
+const ZE={head:"🧠",shoulder:"🏋️",torso:"🧍",arm:"💪",thigh:"🦵",knee:"🦿",calf:"🦶",ankle:"👟"};
+const FLAGS=["فقدان الوعي أو عدم الاستجابة","صعوبة في التنفس","نزيف شديد لا يتوقف","ألم في الصدر","ضربة قوية على الرأس أو الرقبة أو الظهر","تشنجات أو تشوّش مع حرارة عالية","عظم ظاهر أو تشوّه شديد"];
+function saveW(){if($("#ws")){W.sym=$("#ws").value;W.d=$("#wd").value;W.t=$("#wt").value}}
+window.chk=()=>{const on=[...document.querySelectorAll(".rf")].some(x=>x.checked);$("#rfres").innerHTML=on?`<div class="hero" style="margin-top:10px"><h2>⚠️ اتصل بالإسعاف الآن</h2><p>لا تنتظر. ابقَ مع المصاب، راقب تنفسه، واضغط على أي نزيف بقماش نظيف. لا تحرّك من تشتبه بإصابة رقبة أو ظهر.</p>${callBtn("big")}</div>`:"";$("#go1").disabled=on;$("#go1").style.opacity=on?.4:1};
+function start(){
+ const bar=`<div style="height:6px;background:var(--line);border-radius:9px;margin-bottom:6px"><div style="height:6px;width:${Math.max(W.s,1)*20}%;background:var(--brand);border-radius:9px"></div></div><small style="color:var(--mute)">الخطوة ${Math.max(W.s,1)} من 5</small>`;
+ const prev=`<button class="btn ghost" onclick="saveW();W.s--;route()">السابق</button>`;
+ let h="";
+ if(W.s===0){h=`<div class="hero"><h2>⚠️ علامة خطر</h2><p>الأعراض التي كتبتها قد تدل على حالة خطيرة. اتصل بالإسعاف الآن ولا تتابع الخطوات.</p>${callBtn("big")}</div><button class="btn ghost" onclick="W.s=4;route()">رجوع</button>`}
+ else if(W.s===1){h=bar+`<h2>هل توجد علامة خطر؟</h2><p style="color:var(--mute);margin-top:0">حدّد أي علامة موجودة الآن.</p>`+FLAGS.map(f=>`<label style="font-weight:400;display:flex;gap:10px;align-items:center;padding:8px 12px;margin:6px 0" class="card"><input type="checkbox" class="rf" onchange="chk()"> ${f}</label>`).join("")+`<div id="rfres"></div><div class="row" style="margin-top:14px"><button class="btn" id="go1" style="flex:1" onclick="W.s=2;route()">لا توجد أي علامة — متابعة</button></div>`}
+ else if(W.s===2){h=bar+`<h2>أين مكان الإصابة؟</h2><div class="grid">${Object.keys(ZN).map(k=>`<div class="tile" onclick="W.z='${k}';W.s=3;route()"><i>${ZE[k]}</i>${ZN[k]}</div>`).join("")}<div class="tile" onclick="W.z='';W.s=3;route()"><i>❓</i>غير متأكد</div></div><div class="row" style="margin-top:14px">${prev}</div>`}
+ else if(W.s===3){const first=W.z?ZONES[W.z]:[];const all=[...first,...INJ.map(i=>i.id).filter(x=>!first.includes(x))];h=bar+`<h2>ما نوع الإصابة؟</h2>${W.z?`<p style="color:var(--mute);margin-top:0">الأقرب لـ ${ZN[W.z]} أولاً.</p>`:""}<div class="grid">${all.map(id=>`<div class="tile" onclick="W.i='${id}';W.s=4;route()"><i>${inj(id).e}</i>${inj(id).n}</div>`).join("")}</div><div class="row" style="margin-top:14px">${prev}</div>`}
+ else if(W.s===4){h=bar+`<h2>تفاصيل الإصابة</h2><div class="note">الصورة اختيارية. تعطي ملاحظات عامة فقط ولا تؤكد تشخيصاً.</div><div class="row"><button class="btn" onclick="$('#file').setAttribute('capture','environment');$('#file').click()">📷 التقاط صورة</button><button class="btn ghost" onclick="$('#file').removeAttribute('capture');$('#file').click()">🖼️ رفع صورة</button></div>${W.photo?`<img src="${W.photo}" alt="صورة الإصابة" style="width:100%;max-height:220px;object-fit:cover;border-radius:12px;margin-top:10px">`:""}<div class="row"><div style="flex:1"><label>التاريخ</label><input type="date" id="wd" value="${W.d}"></div><div style="flex:1"><label>الوقت</label><input type="time" id="wt" value="${W.t}"></div></div><label>الأعراض</label><textarea class="f" id="ws" rows="3" placeholder="ألم، تورم، تنميل...">${esc(W.sym)}</textarea><div class="row" style="margin-top:14px">${prev}<button class="btn" style="flex:1" onclick="saveW();if(EMG.test(W.sym)){W.s=0}else{W.s=5;W.st=0}route()">عرض الإسعاف</button></div>`}
+ else{const i=inj(W.i),n=i.st.length,k=W.st;
+  h=bar+`<h2>${i.e} ${i.n}</h2>`+(i.urgent?`<div class="hero"><b>⚠️ ${i.urgent}</b><div style="margin-top:8px">${callBtn()}</div></div>`:"");
+  if(k<n){h+=`<div class="card" style="text-align:center;padding:22px"><small style="color:var(--mute)">الإجراء ${k+1} من ${n}</small><p style="font-size:20px;font-weight:600;margin:10px 0">${i.st[k]}</p></div><div class="row">${k?`<button class="btn ghost" onclick="W.st--;route()">السابق</button>`:`<button class="btn ghost" onclick="W.s=4;route()">رجوع</button>`}<button class="btn" style="flex:1" onclick="W.st++;route()">${k===n-1?"إنهاء الخطوات":"التالي"}</button></div>`}
+  else{const ul=a=>"<ul>"+a.map(x=>`<li>${x}</li>`).join("")+"</ul>";h+=`${W.photo?`<img src="${W.photo}" alt="" style="width:100%;max-height:160px;object-fit:cover;border-radius:12px;margin-bottom:8px"><p style="font-size:14px;color:var(--mute)">ملاحظات بصرية عامة: تحقق من التورم وتغيّر اللون والتشوّه والجرح المفتوح. لا يمكن تأكيد التشخيص من الصورة.</p>`:""}<div class="card"><div class="sec no"><h4>تجنّب</h4>${ul(i.av)}</div><div class="sec ask"><h4>اطلب المساعدة الطبية إذا</h4>${ul(i.sk)}</div></div><div class="row"><button class="btn" onclick="saveStart()">📋 حفظ في السجل</button><button class="btn ghost" onclick="video('${i.n}')">▶ فيديو</button><button class="btn ghost" onclick="expert('${i.n}')">👨‍⚕️ مختص</button><button class="btn ghost" onclick="go('injury/${i.id}')">📖 الدليل</button></div><div class="row" style="margin-top:10px"><button class="btn ghost" onclick="W.st=0;route()">إعادة الخطوات</button><button class="btn ghost" onclick="W=newW();route()">حالة جديدة</button></div><p style="color:var(--mute);font-size:13px">${WARN}</p>`}}
+ $("#main").innerHTML=h;
+}
+window.saveStart=()=>{const L=store.get("log",[]);L.unshift({id:Date.now(),inj:W.i,zone:W.z,date:W.d,time:W.t,sym:W.sym,photo:W.photo,ups:[]});store.set("log",L);W=newW();go("log")};
+function setMode(m){MODE=m;store.set("mode",m);document.body.dataset.mode=m;$("#menu").hidden=m!=="chat";$("#mode").textContent=m==="chat"?"🖥️ كلاسيكي":"💬 شات"}
+window.toggleMode=()=>{setMode(MODE==="chat"?"classic":"chat");const h=MODE==="chat"?"#aid":"#home";if(location.hash===h)route();else location.hash=h};
+const items=[["aid","💬 محادثة جديدة"],["start","▶️ خطوات الإسعاف"],["massage","💆 التدليك"],["body","🧍 مكان الإصابة"],["photo","📷 تصوير الإصابة"],["log","📋 سجل الإصابات"],["sos","🚨 الطوارئ"],["home","📖 كل الإصابات"]];
+$("#dp").innerHTML=items.map(([k,t])=>`<button onclick="${k==='aid'?"chat=[];":""}go('${k}');route()">${t}</button>`).join("")+"<h5>الإصابات</h5>"+INJ.map(i=>`<button onclick="go('injury/${i.id}')">${i.e} ${i.n}</button>`).join("");
+$("#menu").onclick=()=>$("#drawer").classList.add("open");$("#drawer .sh").onclick=()=>$("#drawer").classList.remove("open");
+$("#mode").onclick=toggleMode;setMode(MODE);
+window.startMassage=()=>{M={s:1,a:""};go("massage")};
+window.pick=m=>{setMode(m);document.querySelector(".modal")?.remove();location.hash=m==="chat"?"#aid":"#home";route()};
+if(FIRST){modal(`<h3>اختر طريقة الاستعمال</h3><p style="margin-top:0;color:var(--mute)">يمكنك التبديل في أي وقت من الزر أعلى الصفحة.</p><button class="btn big" style="margin-bottom:8px" onclick="pick('classic')">🖥️ تطبيق كلاسيكي بخطوات</button><button class="btn big" onclick="pick('chat')" style="background:var(--ink);color:var(--bg)">💬 شات محدّث</button>`);document.getElementById("mc")?.remove()}
+route();
+</script>
+</body></html>
